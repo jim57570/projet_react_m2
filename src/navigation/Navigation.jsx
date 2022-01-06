@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BottomNavigation, BottomNavigationTab, Layout, Text } from '@ui-kitten/components';
+import { BottomNavigation, BottomNavigationTab, Layout, Text, Icon } from '@ui-kitten/components';
 
 import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
@@ -13,7 +13,19 @@ const VuePlacesNavigation = createStackNavigator();
 const VueTest2Navigation = createStackNavigator();
 const TabNavigation = createBottomTabNavigator();
 
-// Affiche la Vue 1
+const PlacesIcon = (props) => (
+    <Icon {...props} name='map-outline'/>
+  );
+
+  const SettingsIcon = (props) => (
+    <Icon {...props} name='settings-2-outline'/>
+  );
+
+  const SearchIcon = (props) => (
+    <Icon {...props} name='search-outline'/>
+  );
+
+// Affiche la Vue Places
 function VuePlacesScreen() {
     return (
         <VuePlacesNavigation.Navigator
@@ -53,9 +65,9 @@ const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigation
         selectedIndex={state.index}
         onSelect={index => navigation.navigate(state.routeNames[index])}>
-        <BottomNavigationTab title='Places' />
-        <BottomNavigationTab title='Search' />
-        <BottomNavigationTab title='Settings' />
+        <BottomNavigationTab title='Places' icon={PlacesIcon} />
+        <BottomNavigationTab title='Search' icon={SearchIcon} />
+        <BottomNavigationTab title='Settings' icon={SettingsIcon} />
     </BottomNavigation>
 );
 

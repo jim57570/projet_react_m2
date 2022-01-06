@@ -5,8 +5,10 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { RootSiblingParent } from 'react-native-root-siblings';
 
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './src/navigation/Navigation';
 
@@ -27,6 +29,7 @@ export default function App() {
       <PersistGate loading={null} persistor={Persistor}>
         <RootSiblingParent>
           <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <IconRegistry icons={EvaIconsPack} />
             <ApplicationProvider {...eva} theme={eva[theme]}>
               <NavigationContainer>
                 <AppNavigator />
