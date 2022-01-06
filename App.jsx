@@ -1,15 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider} from '@ui-kitten/components';
 
-import Home from './src/components/Home';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { RootSiblingParent } from 'react-native-root-siblings';
+
+import { ApplicationProvider } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigator from './src/navigation/Navigation';
+
+import { Store, Persistor } from './src/store/Config';
+import { ThemeContext } from './src/store/theme-context';
 
 export default function App() {
+
+  const [theme, setTheme] = React.useState('light');
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+  };
+
   return (
-    <ApplicationProvider {...eva} theme={eva.light}>
-        <Home/>
-        <StatusBar style="auto" />
-    </ApplicationProvider>
+    <Provider store={Store}>
+      <PersistGate loading={null} persistor={Persistor}>
+        <RootSiblingParent>
+          <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <ApplicationProvider {...eva} theme={eva[theme]}>
+              <NavigationContainer>
+                <AppNavigator />
+                <StatusBar style="auto" />
+              </NavigationContainer >
+            </ApplicationProvider>
+          </ThemeContext.Provider>
+        </RootSiblingParent>
+      </PersistGate>
+    </Provider>
   );
 }
