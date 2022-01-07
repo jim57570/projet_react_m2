@@ -9,47 +9,18 @@ import { Drawer, DrawerItem, BottomNavigation, BottomNavigationTab, Layout, Text
 
 import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
-import VueTest2 from "../components/VueTest2"
+import VueTest2 from "../components/Search"
 import Settings from "../components/Settings"
 import DrawerBarNavigation from "./DrawerNavigation"
 import BottomBarNavigation from "./BottomBarNavigation"
-
-const VueTest2Navigation = createStackNavigator();
-
-
-
-
-
-
-// Affiche la Vue 2
-function VueTest2Screen() {
-    return (
-        <VueTest2Navigation.Navigator
-            initialRouteName="ViewVueTest2"
-        >
-            <VueTest2Navigation.Screen
-                name="ViewVueTest2"
-                component={VueTest2}
-            />
-        </VueTest2Navigation.Navigator>
-    )
-};
-
-
 
 
 
 // Main Barre de navigation
 function AppNavigator() {
-    return (
-        <BottomBarNavigation/>
+    return ( 
+        <DrawerBarNavigation/>
     );
 }
-
-const styles = StyleSheet.create({
-    space: {
-        height: 100,
-    },
-});
 
 export default AppNavigator;

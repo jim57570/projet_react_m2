@@ -24,7 +24,7 @@ const renderItem = ({ item, index }) => (
     />
 );
 
-const VueTest2 = () => {
+const Search = () => {
     return (
         <Layout style={styles.container}>
             <List
@@ -37,7 +37,7 @@ const VueTest2 = () => {
     );
 };
 
-export default VueTest2;
+export default Search;
 
 const styles = StyleSheet.create({
     container: {

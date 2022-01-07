@@ -10,11 +10,13 @@ import { Drawer, DrawerItem, BottomNavigation, BottomNavigationTab, Layout, Text
 
 import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
-import VueTest2 from "../components/VueTest2"
+import Search from "../components/Search"
 import Settings from "../components/Settings"
 
 const TabNavigation = createBottomTabNavigator();
 const VuePlacesNavigation = createStackNavigator();
+const VueSearchNavigation = createStackNavigator();
+
 
 const PlacesIcon = (props) => (
     <Icon {...props} name='map-outline' />
@@ -49,6 +51,20 @@ function VuePlacesScreen() {
     )
 };
 
+// Affiche la Vue 2
+function VueSearch() {
+    return (
+        <VueSearchNavigation.Navigator
+            initialRouteName="Search"
+        >
+            <VueSearchNavigation.Screen
+                name="Search"
+                component={Search}
+            />
+        </VueSearchNavigation.Navigator>
+    )
+};
+
 // Barre de navigation
 const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigation
@@ -56,7 +72,6 @@ const BottomTabBar = ({ navigation, state }) => (
         onSelect={index => navigation.navigate(state.routeNames[index])}>
         <BottomNavigationTab title='Places' icon={PlacesIcon} style={styles.space} />
         <BottomNavigationTab title='Search' icon={SearchIcon} style={styles.space} />
-        <BottomNavigationTab title='Settings' icon={SettingsIcon} style={styles.space} />
     </BottomNavigation>
 );
 
@@ -73,12 +88,8 @@ function BottomBarNavigation() {
                 component={VuePlacesScreen}
             />
             <TabNavigation.Screen
-                name="Vue Test 2"
-                component={VueTest2}
-            />
-            <TabNavigation.Screen
-                name="Settings"
-                component={Settings}
+                name="Search"
+                component={Search}
             />
         </TabNavigation.Navigator>
     );

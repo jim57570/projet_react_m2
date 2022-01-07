@@ -11,7 +11,7 @@ import { Drawer, DrawerItem, BottomNavigation, BottomNavigationTab, Layout, Text
 import BottomBarNavigation from "./BottomBarNavigation"
 import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
-import VueTest2 from "../components/VueTest2"
+import Search from "../components/Search"
 import Settings from "../components/Settings"
 
 const DrawerNavigation = createDrawerNavigator();
@@ -53,9 +53,8 @@ const DrawerContent = ({ navigation, state }) => (
     <Drawer
         selectedIndex={new IndexPath(state.index)}
         onSelect={index => navigation.navigate(state.routeNames[index.row])}>
-        <DrawerItem title='Users' />
-        <DrawerItem title='Orders' />
-        <DrawerItem title='Orders2' />
+        <DrawerItem title='Home' style={styles.space}/>
+        <DrawerItem title='Settings' />
     </Drawer>
 );
 
@@ -72,10 +71,6 @@ function DrawerBarNavigation() {
                 component={BottomBarNavigation}
             />
             <DrawerNavigation.Screen
-                name="Vue Test 2"
-                component={VueTest2}
-            />
-            <DrawerNavigation.Screen
                 name="Settings"
                 component={Settings}
             />
@@ -84,3 +79,9 @@ function DrawerBarNavigation() {
 }
 
 export default DrawerBarNavigation;
+
+const styles = StyleSheet.create({
+    space: {
+        height: 100,
+    },
+});
