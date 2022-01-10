@@ -27,6 +27,7 @@ const NewPlace = () => {
                 accessoryLeft={renderIconText}
                 value={value}
                 onChangeText={nextValue => setValue(nextValue)}
+                style={styles.input}
             />
             <Input
                 multiline={true}
@@ -34,12 +35,14 @@ const NewPlace = () => {
                 placeholder='Description'
                 accessoryLeft={renderIconText}
                 onChangeText={nextValue => setValue(nextValue)}
+                style={styles.input}
             />
             <Select
                 placeholder='Tags'
                 multiSelect={true}
                 selectedIndex={selectedIndex}
                 onSelect={index => setSelectedIndex(index)}
+                style={styles.input}
                 accessoryLeft={renderIconTags}>
                 <SelectItem title='Option 1' />
                 <SelectItem title='Option 2' />
@@ -50,6 +53,7 @@ const NewPlace = () => {
                 value={value}
                 onChangeText={nextValue => setValue(nextValue)}
                 accessoryLeft={renderIconAddress}
+                style={styles.input}
             />
             <Button>
                 Add place
@@ -63,5 +67,9 @@ export default NewPlace;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 20
     },
+    input: {
+        paddingBottom: 10
+    }
 });

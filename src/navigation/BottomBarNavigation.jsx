@@ -73,9 +73,18 @@ function VuePlacesScreen() {
 // Affiche la Vue Search
 function VueSearch() {
     const VueSearchNavigation = createStackNavigator();
+    const theme = useTheme();
     return (
         <VueSearchNavigation.Navigator
             initialRouteName="Search"
+            screenOptions={{
+                headerShown: true,
+                headerStyle: {
+                    backgroundColor: theme['background-basic-color-1'],
+                    borderColor: theme['border-basic-color-1']
+                },
+                headerTintColor: theme['text-basic-color'],
+            }}
         >
             <VueSearchNavigation.Screen
                 name="Search"
