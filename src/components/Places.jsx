@@ -15,6 +15,10 @@ const Places = ({ navigation, testVariable, dispatch}) => {
         navigation.navigate("ViewNewPlace");
       };
 
+      const navigateToMap = () => {
+        navigation.navigate("ViewCarte");
+      };
+
     return (
         <Layout style={styles.container}>
             <Text category='h1'>{testVariable}</Text>
@@ -23,6 +27,9 @@ const Places = ({ navigation, testVariable, dispatch}) => {
             </Button>
             <Button onPress={navigateToAddNewPlace}>
                 Add New Place
+            </Button>
+            <Button onPress={navigateToMap}>
+                Allez sur la carte
             </Button>
         </Layout>
     );

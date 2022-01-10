@@ -12,6 +12,8 @@ import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
 import Search from "../components/Search"
 import Settings from "../components/Settings"
+import Carte from "../components/Carte"
+import Localisation from "../components/Localisation"
 
 const TabNavigation = createBottomTabNavigator();
 const VuePlacesNavigation = createStackNavigator();
@@ -46,6 +48,14 @@ function VuePlacesScreen() {
             <VuePlacesNavigation.Screen
                 name="ViewNewPlace"
                 component={NewPlace}
+            />
+            <VuePlacesNavigation.Screen
+                name="ViewCarte"
+                component={Carte}
+            />
+            <VuePlacesNavigation.Screen
+                name="ViewLocalisationDetail"
+                component={Localisation}
             />
         </VuePlacesNavigation.Navigator>
     )
