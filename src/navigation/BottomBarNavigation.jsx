@@ -1,58 +1,69 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { createStackNavigator } from '@react-navigation/stack';
-import { View, StyleSheet } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Drawer, DrawerItem, BottomNavigation, BottomNavigationTab, Layout, Text, Icon, IndexPath } from '@ui-kitten/components';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import { BottomNavigation, BottomNavigationTab, Icon, useTheme } from '@ui-kitten/components';
 
 import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
 import Search from "../components/Search"
-import Settings from "../components/Settings"
-
-const TabNavigation = createBottomTabNavigator();
-const VuePlacesNavigation = createStackNavigator();
-const VueSearchNavigation = createStackNavigator();
 
 
+
+
+
+// Icon places
 const PlacesIcon = (props) => (
     <Icon {...props} name='map-outline' />
 );
 
-const SettingsIcon = (props) => (
-    <Icon {...props} name='settings-2-outline' />
-);
-
+// Icon search
 const SearchIcon = (props) => (
     <Icon {...props} name='search-outline' />
 );
 
 // Affiche la Vue Places
 function VuePlacesScreen() {
+    const VuePlacesNavigation = createStackNavigator();
+    const theme = useTheme();
     return (
         <VuePlacesNavigation.Navigator
-            initialRouteName="ViewPlaces"
+            initialRouteName="Places"
             screenOptions={{
-                headerShown: false
+                headerShown: true,
+                headerBackTitleStyle: {
+                    // backgroundColor: theme['background-basic-color-1']
+                },
+                headerStyle: {
+                    backgroundColor: theme['background-basic-color-1'],
+                    borderColor: theme['border-basic-color-1']
+                },
+                headerTintColor: theme['text-basic-color'],
             }}
         >
             <VuePlacesNavigation.Screen
-                name="ViewPlaces"
+
+                name="Places"
                 component={Places}
+                options={{ headerShown: false }}
             />
             <VuePlacesNavigation.Screen
-                name="ViewNewPlace"
+                name="Add New Place"
                 component={NewPlace}
+                screenOptions={{
+                    headerShown: true,
+                }}
             />
         </VuePlacesNavigation.Navigator>
     )
 };
 
-// Affiche la Vue 2
+// Affiche la Vue Search
 function VueSearch() {
+    const VueSearchNavigation = createStackNavigator();
     return (
         <VueSearchNavigation.Navigator
             initialRouteName="Search"
@@ -65,7 +76,7 @@ function VueSearch() {
     )
 };
 
-// Barre de navigation
+// Rendue de la Barre de navigation
 const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigation
         selectedIndex={state.index}
@@ -76,7 +87,8 @@ const BottomTabBar = ({ navigation, state }) => (
 );
 
 // Main Barre de navigation
-function BottomBarNavigation() {
+const BottomBarNavigation = (props) => {
+    const TabNavigation = createBottomTabNavigator();
     return (
         <TabNavigation.Navigator
             screenOptions={{
@@ -84,12 +96,12 @@ function BottomBarNavigation() {
             }}
             tabBar={props => <BottomTabBar {...props} />}>
             <TabNavigation.Screen
-                name="Places"
+                name="ViewPlaces"
                 component={VuePlacesScreen}
             />
             <TabNavigation.Screen
-                name="Search"
-                component={Search}
+                name="ViewSearch"
+                component={VueSearch}
             />
         </TabNavigation.Navigator>
     );
