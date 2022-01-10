@@ -1,78 +1,90 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Drawer, DrawerItem, BottomNavigation, BottomNavigationTab, Layout, Text, Icon, IndexPath } from '@ui-kitten/components';
-
 import BottomBarNavigation from "./BottomBarNavigation"
-import Places from "../components/Places"
-import NewPlace from "../components/NewPlace"
-import Search from "../components/Search"
+
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+
+import { Drawer, DrawerItem, Icon, IndexPath } from '@ui-kitten/components';
+
 import Settings from "../components/Settings"
-import Carte from "../components/Carte"
+import { ThemeContext } from '../store/theme-context';
 
-const DrawerNavigation = createDrawerNavigator();
-
-
-const PlacesIcon = (props) => (
-    <Icon {...props} name='map-outline' />
+// Icon Home
+const HomeIcon = (props) => (
+    <Icon {...props} name='home-outline' />
 );
 
+// Icon Settings
 const SettingsIcon = (props) => (
     <Icon {...props} name='settings-2-outline' />
 );
 
-const SearchIcon = (props) => (
-    <Icon {...props} name='search-outline' />
+// Icon Sun for bright theme
+const SunIcon = (props) => (
+    <Icon {...props} name='sun-outline' />
 );
 
-// Affiche la Vue Places
-function VuePlacesScreen() {
+// Icon Moon for dark theme
+const MoonIcon = (props) => (
+    <Icon {...props} name='moon-outline' />
+);
+
+// Affecte la navigation à chaque item du drawer
+// Remarque : dans le cas où il s'agit du bouton thème, il n'y aura pas de navigation
+const CheckIndex = (navigation, state, index, themeContext, setTitleTheme, setIconTheme) => {
+    if (index.section == 1 && index.row == 0) {
+        if (themeContext.theme == "dark") {
+            setIconTheme(SunIcon);
+            setTitleTheme("Bright mode");
+        }
+        else {
+            setIconTheme(MoonIcon);
+            setTitleTheme("Dark mode");
+        }
+        themeContext.toggleTheme();
+    }
+    else {
+        navigation.navigate(state.routeNames[index.row]);
+    }
+}
+
+// Rendue du drawer navigation
+const DrawerContent = ({ navigation, state }) => {
+    const themeContext = React.useContext(ThemeContext);
+    const [titleTheme, setTitleTheme] = useState(themeContext.theme == "light" ? "Bright mode" : "Dark mode");
+    const [iconTheme, setIconTheme] = useState(themeContext.theme == "light" ? SunIcon : MoonIcon);
     return (
-        <VuePlacesNavigation.Navigator
-            initialRouteName="ViewPlaces"
-            screenOptions={{
-                headerShown: false
-            }}
-        >
-            <VuePlacesNavigation.Screen
-                name="ViewPlaces"
-                component={Places}
-            />
-            <VuePlacesNavigation.Screen
-                name="ViewNewPlace"
-                component={NewPlace}
-            />
-            <VuePlacesNavigation.Screen
-                name="ViewCarte"
-                component={NewPlace}
-            />
-        </VuePlacesNavigation.Navigator>
+        <Drawer
+            contentContainerStyle={styles.container}
+            selectedIndex={new IndexPath(state.index)}
+            onSelect={index => CheckIndex(navigation, state, index, themeContext, setTitleTheme, setIconTheme)}>
+            <View>
+                <DrawerItem title='Home' accessoryLeft={HomeIcon} />
+                <DrawerItem title='Settings' accessoryLeft={SettingsIcon} />
+            </View>
+            <View>
+                <DrawerItem title={titleTheme} accessoryLeft={iconTheme}
+                />
+            </View>
+        </Drawer>
     )
 };
-const DrawerContent = ({ navigation, state }) => (
-    <Drawer
-        selectedIndex={new IndexPath(state.index)}
-        onSelect={index => navigation.navigate(state.routeNames[index.row])}>
-        <DrawerItem title='Home' style={styles.space}/>
-        <DrawerItem title='Settings' />
-    </Drawer>
-);
 
-// Main Barre de navigation
-function DrawerBarNavigation() {
+// Main Drawer navigation
+const DrawerBarNavigation = ({...props}) => {
+
+    const DrawerNavigation = createDrawerNavigator();
+
     return (
         <DrawerNavigation.Navigator
             screenOptions={{
-                headerShown: false
+                headerShown: false,
             }}
             drawerContent={props => <DrawerContent {...props} />}>
             <DrawerNavigation.Screen
-                name="Places"
+                name="Home"
                 component={BottomBarNavigation}
             />
             <DrawerNavigation.Screen
@@ -86,7 +98,19 @@ function DrawerBarNavigation() {
 export default DrawerBarNavigation;
 
 const styles = StyleSheet.create({
-    space: {
-        height: 100,
+    container: {
+        flex: 1,
+        justifyContent: 'space-between',
+        marginVertical: 50
     },
+
+    Item: {
+        height: 128,
+        flexDirection: 'row',
+        marginVertical: 5
+    },
+    test: {
+        marginVertical: 50,
+        color: 'white'
+    }
 });

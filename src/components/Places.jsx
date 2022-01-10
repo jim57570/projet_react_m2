@@ -12,7 +12,7 @@ const Places = ({ navigation, testVariable, dispatch}) => {
     }
 
     const navigateToAddNewPlace = () => {
-        navigation.navigate("ViewNewPlace");
+        navigation.navigate("Add New Place");
       };
 
       const navigateToMap = () => {
