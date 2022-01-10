@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Input, Button, IndexPath, Select, SelectItem, Icon } from '@ui-kitten/components';
 import { StyleSheet, View, Image } from 'react-native';
 import Assets from '../definitions/Assets';
 
 const NewPlace = () => {
 
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = useState('');
     const [selectedIndex, setSelectedIndex] = React.useState([
         new IndexPath(0),
         new IndexPath(1),

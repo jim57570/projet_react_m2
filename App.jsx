@@ -32,7 +32,7 @@ export default function App() {
             <IconRegistry icons={EvaIconsPack} />
             <ApplicationProvider {...eva} theme={eva[theme]}>
               <NavigationContainer>
-                <AppNavigator />
+                <AppNavigator {...eva} />
                 <StatusBar style="auto" />
               </NavigationContainer >
             </ApplicationProvider>
