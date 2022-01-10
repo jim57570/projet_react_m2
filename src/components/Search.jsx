@@ -7,14 +7,12 @@ const data = new Array(8).fill({
     description: 'Description for Item',
 });
 
-// Test dedee
 const renderIconTags = (props) => (
     <Icon name='pricetags-outline' {...props} />
 );
 const renderIconAddress = (props) => (
     <Icon name='pin-outline' {...props} />
 );
-
 const renderIconSearch = (props) => (
     <Icon name='search-outline' {...props} />
 );
@@ -41,47 +39,66 @@ const Search = () => {
     // Entrées de l'utilisateur
     const [search, setSearch] = useState();
     const [tags, setTags] = useState();
-    const [selectedIndex, setSelectedIndex] = React.useState([
+    const [selectedIndexTags, setSelectedIndexTags] = React.useState([
+        new IndexPath(0),
+        new IndexPath(1),
+    ]);
+    const [selectedIndexPlace, setSelectedIndexPlace] = React.useState([
+        new IndexPath(0),
+        new IndexPath(1),
+    ]);
+
+    const [selectedIndexKilometer, setSelectedIndexKilometer] = React.useState([
         new IndexPath(0),
         new IndexPath(1),
     ]);
 
     return (
         <Layout style={styles.container}>
-            <Input
-                placeholder='Search'
-                accessoryLeft={renderIconSearch}
-                value={search}
-                onChangeText={nextValue => setSearch(nextValue)}
-            />
-            <Select
-                placeholder='Tags'
-                multiSelect={true}
-                selectedIndex={selectedIndex}
-                onSelect={index => setSelectedIndex(index)}
-                accessoryLeft={renderIconTags}>
-                <SelectItem title='Option 1' />
-                <SelectItem title='Option 2' />
-                <SelectItem title='Option 3' />
-            </Select>
-            <Select
-                placeholder='Place'
-                multiSelect={true}
-                selectedIndex={selectedIndex}
-                onSelect={index => setSelectedIndex(index)}
-                accessoryLeft={renderIconAddress}>
-                <SelectItem title='Metz' />
-                <SelectItem title='Thionville' />
-                <SelectItem title='Paris' />
-            </Select>
-            <Select
-                multiSelect={true}
-                selectedIndex={selectedIndex}
-                onSelect={index => setSelectedIndex(index)}>
-                <SelectItem title='5 km' />
-                <SelectItem title='10 km' />
-                <SelectItem title='15 km' />
-            </Select>
+            <Layout style={styles.containerSearch}>
+                <Input
+                    placeholder='Search'
+                    accessoryLeft={renderIconSearch}
+                    value={search}
+                    onChangeText={nextValue => setSearch(nextValue)}
+                    style={styles.input}
+                />
+                <Select
+                    placeholder='Tags'
+                    multiSelect={true}
+                    selectedIndex={selectedIndexTags}
+                    onSelect={index => setSelectedIndexTags(index)}
+                    accessoryLeft={renderIconTags}
+                    style={styles.input}>
+                    <SelectItem title='Option 1' />
+                    <SelectItem title='Option 2' />
+                    <SelectItem title='Option 3' />
+                </Select>
+                <Layout style={styles.containerPlace}>
+                    <Select
+                        placeholder='Place'
+                        selectedIndex={selectedIndexPlace}
+                        onSelect={index => setSelectedIndexPlace(index)}
+                        accessoryLeft={renderIconAddress}
+                        style={styles.selectPlace}>
+                        <SelectItem title='Metz' />
+                        <SelectItem title='Thionville' />
+                        <SelectItem title='Paris' />
+                    </Select>
+                    <Select
+                        selectedIndex={selectedIndexKilometer}
+                        onSelect={index => setSelectedIndexKilometer(index)}
+                        style={styles.selectKilometer}>
+                        <SelectItem title='5 km' />
+                        <SelectItem title='10 km' />
+                        <SelectItem title='15 km' />
+                    </Select>
+                </Layout>
+                <Button>
+                    Search
+                </Button>
+
+            </Layout>
             <List
                 style={styles.listItems}
                 data={data}
@@ -98,6 +115,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    listItems: {
+    containerSearch: {
+        paddingHorizontal: 10,
+        paddingVertical: 20
+    },
+    containerPlace: {
+        flex: 1,
+        flexDirection: "row",
+        paddingBottom: 50
+    },
+    selectPlace: {
+        width: "65%",
+        marginRight: 20
+    },
+    selectKilometer: {
+        width: "30%",
+    },
+    input: {
+        paddingBottom: 10,
     }
 });

@@ -15,6 +15,7 @@ import Search from "../components/Search"
 
 
 
+
 // Icon places
 const PlacesIcon = (props) => (
     <Icon {...props} name='map-outline' />
@@ -57,6 +58,14 @@ function VuePlacesScreen() {
                     headerShown: true,
                 }}
             />
+            <VuePlacesNavigation.Screen
+                name="ViewCarte"
+                component={Carte}
+            />
+            <VuePlacesNavigation.Screen
+                name="ViewLocalisationDetail"
+                component={Localisation}
+            />
         </VuePlacesNavigation.Navigator>
     )
 };
@@ -64,9 +73,18 @@ function VuePlacesScreen() {
 // Affiche la Vue Search
 function VueSearch() {
     const VueSearchNavigation = createStackNavigator();
+    const theme = useTheme();
     return (
         <VueSearchNavigation.Navigator
             initialRouteName="Search"
+            screenOptions={{
+                headerShown: true,
+                headerStyle: {
+                    backgroundColor: theme['background-basic-color-1'],
+                    borderColor: theme['border-basic-color-1']
+                },
+                headerTintColor: theme['text-basic-color'],
+            }}
         >
             <VueSearchNavigation.Screen
                 name="Search"
