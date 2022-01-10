@@ -7,7 +7,7 @@ const data = new Array(8).fill({
     description: 'Description for Item',
 });
 
-// Test
+// Test dedee
 const renderIconTags = (props) => (
     <Icon name='pricetags-outline' {...props} />
 );
