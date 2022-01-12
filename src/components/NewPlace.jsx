@@ -4,7 +4,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import Assets from '../definitions/Assets';
 
 import { connect } from 'react-redux';
-import { autoComplete } from '../api/Here';
+import { autoComplete, geocoding } from '../api/Here';
 
 const NewPlace = ({ placesList, dispatch }) => {
 
@@ -57,6 +57,30 @@ const NewPlace = ({ placesList, dispatch }) => {
             title={item.address.label}
         />
     );
+    
+    //enregistrement d'un lieu
+    const addPlace = async () => {
+        //TODO verification formulaire
+        //TODO verification retour API
+        const res = await geocoding(address);
+
+        //constitution de notre objet Lieu
+        const newPlace = {
+            "nom": name,
+            "loc": address,
+            "cordonnee": {
+                "latitude": res.items[0].position.lat,
+                "longitude": res.items[0].position.lng,
+                "latitudeDelta": 1,
+                "longitudeDelta": 1,
+            },
+            "description": description
+        };
+        const action = {type: 'ADD_PLACE', value: newPlace};
+        dispatch(action); // dispatch est injectée par Redux dans les props du composant
+
+        //console.log(placesList);
+    };
 
     return (
         <Layout style={styles.container}>
@@ -96,15 +120,17 @@ const NewPlace = ({ placesList, dispatch }) => {
                 style={styles.input}>
                 {addressData.map(renderAutocomplete)}
             </Autocomplete>
-            <Button>
-                Add place
-            </Button>
+            <Button
+                title='Add place'
+                onPress={addPlace}
+            />
+
         </Layout>
     );
 };
 
 const mapStateToProps = (state) => {
-    //console.log(state);
+    console.log(state);
     return {
         placesList: state.places
     }

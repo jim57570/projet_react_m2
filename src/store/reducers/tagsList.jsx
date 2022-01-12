@@ -25,6 +25,10 @@ function tagsReducer(state = initialState, action) {
         case 'UPDATE_TAG':
             nextState = state;
             return nextState || state
+        //Reset de la liste
+        case 'RESET_TAG':
+            nextState = initialState;
+            return nextState || state
         default:
             return state
     };
