@@ -1,11 +1,29 @@
 import React, { useState } from 'react';
-import { Layout, Input, Button, IndexPath, Select, SelectItem, Icon } from '@ui-kitten/components';
+import { Layout, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem } from '@ui-kitten/components';
 import { StyleSheet, View, Image } from 'react-native';
 import Assets from '../definitions/Assets';
 
-const NewPlace = () => {
+import { connect } from 'react-redux';
+import { autoComplete, geocoding } from '../api/Here';
 
-    const [value, setValue] = useState('');
+const NewPlace = ({ placesList, dispatch }) => {
+
+    //state pour le formulaire
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [address, setAddress] = useState('');
+
+    //liste d'adresses pour l'autocompletion
+    const [addressData, setAddressData] = useState([]);
+
+    //appel api pour avoir liste autocompletion adresse
+    const fetchAddress = async () => {
+        setAddressData([]);
+        const res = await autoComplete(address);
+        setAddressData(res.items);
+    };
+
+
     const [selectedIndex, setSelectedIndex] = React.useState([
         new IndexPath(0),
         new IndexPath(1),
@@ -20,13 +38,57 @@ const NewPlace = () => {
         <Icon name='edit-outline' {...props} />
     );
 
+    //lors d'une saisie sur le champ adresse
+    const onChangeText = (query) => {
+        setAddress(query);
+        if(address != '')
+            fetchAddress();
+    };
+
+    //choix autocompletion sur le champ adresse
+    const onSelect = (index) => {
+        setAddress(addressData[index].address.label);
+    };
+
+    //affichage autocompletion adresse
+    const renderAutocomplete = (item, index) => (
+        <AutocompleteItem
+            key={index}
+            title={item.address.label}
+        />
+    );
+    
+    //enregistrement d'un lieu
+    const addPlace = async () => {
+        //TODO verification formulaire
+        //TODO verification retour API
+        const res = await geocoding(address);
+
+        //constitution de notre objet Lieu
+        const newPlace = {
+            "nom": name,
+            "loc": address,
+            "cordonnee": {
+                "latitude": res.items[0].position.lat,
+                "longitude": res.items[0].position.lng,
+                "latitudeDelta": 1,
+                "longitudeDelta": 1,
+            },
+            "description": description
+        };
+        const action = {type: 'ADD_PLACE', value: newPlace};
+        dispatch(action); // dispatch est injectée par Redux dans les props du composant
+
+        //console.log(placesList);
+    };
+
     return (
         <Layout style={styles.container}>
             <Input
                 placeholder='Name'
                 accessoryLeft={renderIconText}
-                value={value}
-                onChangeText={nextValue => setValue(nextValue)}
+                value={name}
+                onChangeText={nextName => setName(nextName)}
                 style={styles.input}
             />
             <Input
@@ -34,7 +96,8 @@ const NewPlace = () => {
                 textStyle={{ minHeight: 64 }}
                 placeholder='Description'
                 accessoryLeft={renderIconText}
-                onChangeText={nextValue => setValue(nextValue)}
+                value={description}
+                onChangeText={nextDescription => setDescription(nextDescription)}
                 style={styles.input}
             />
             <Select
@@ -48,21 +111,32 @@ const NewPlace = () => {
                 <SelectItem title='Option 2' />
                 <SelectItem title='Option 3' />
             </Select>
-            <Input
+            <Autocomplete
                 placeholder='Address'
-                value={value}
-                onChangeText={nextValue => setValue(nextValue)}
+                value={address}
+                onSelect={onSelect}
+                onChangeText={onChangeText}
                 accessoryLeft={renderIconAddress}
-                style={styles.input}
+                style={styles.input}>
+                {addressData.map(renderAutocomplete)}
+            </Autocomplete>
+            <Button
+                title='Add place'
+                onPress={addPlace}
             />
-            <Button>
-                Add place
-            </Button>
+
         </Layout>
     );
 };
 
-export default NewPlace;
+const mapStateToProps = (state) => {
+    console.log(state);
+    return {
+        placesList: state.places
+    }
+}
+
+export default connect(mapStateToProps)(NewPlace);
 
 const styles = StyleSheet.create({
     container: {

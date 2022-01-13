@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import Carte from "./Carte";
 
-const Places = ({ navigation, testVariable, dispatch }) => {
+const Places = ({ navigation }) => {
 
     const localisation = [
         {
@@ -67,6 +67,7 @@ const Places = ({ navigation, testVariable, dispatch }) => {
         <Layout style={styles.container}>
             <View style={styles.fenetremap}>
                 <Carte localisation={localisation} style={styles.carte}/>
+
                 <Button style={styles.space} onPress={navigateToAddNewPlace}>
                     Add New Place
                 </Button>
@@ -81,13 +82,9 @@ const Places = ({ navigation, testVariable, dispatch }) => {
     );
 };
 
-const mapStateToProps = (state) => {
-    return {
-        testVariable: state.testVariable
-    }
-}
 
-export default connect(mapStateToProps)(Places);
+
+export default Places;
 
 const styles = StyleSheet.create({
     container: {

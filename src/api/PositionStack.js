@@ -1,6 +1,7 @@
 const API_KEY = 'b1064a5e89465acbe490905a4990779b';
 const url = 'http://api.positionstack.com/v1';
 
+//test
 //Permet de retrouver les coordonnees geographiques a partir d une adresse postale
 export const forward = async (query) => {
     try {
