@@ -10,7 +10,7 @@ const Places = ({ navigation, placesList, dispatch }) => {
     const [listPlaces, setListPlaces] = useState(placesList);
     const [isRefreshing, setIsRefreshing] = useState(false);
 
-    console.log(listPlaces);
+    console.log(placesList);
 
     useEffect(() => {
         setListPlaces(placesList);
@@ -72,11 +72,10 @@ const Places = ({ navigation, placesList, dispatch }) => {
 };
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
-        placesList: state.places
+        placesList: state.places.places
     }
-}
+};
 
 export default connect(mapStateToProps)(Places);
 
