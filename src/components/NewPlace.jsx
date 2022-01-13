@@ -68,7 +68,7 @@ const NewPlace = ({ placesList, dispatch }) => {
         const newPlace = {
             "nom": name,
             "loc": address,
-            "cordonnee": {
+            "coordonnee": {
                 "latitude": res.items[0].position.lat,
                 "longitude": res.items[0].position.lng,
                 "latitudeDelta": 1,

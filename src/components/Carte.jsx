@@ -10,7 +10,7 @@ const Carte = ({ navigation, localisation }) => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [placement, setPlacement] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  console.log(localisation);
 
   // useEffect(() => {
   //   setLoading(true);
@@ -76,14 +76,24 @@ const Carte = ({ navigation, localisation }) => {
           <Marker coordinate={zone} />
 
 
-          {localisation.map((localisation) => (
+          {/* {localisation.map((localisation) => (
             <Marker
-              key={localisation.id}
               coordinate={localisation.coordonnee}
               title={localisation.nom}
               description={localisation.description}
             />
-          ))}
+          ))} */}
+          { localisation ? 
+          localisation.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={marker.coordonnee}
+              title={marker.nom}
+              description={marker.description}
+            />
+          )) : null
+        }
+
         </MapView>
         )}
     </View>

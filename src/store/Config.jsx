@@ -2,7 +2,6 @@ import { createStore, combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import testVariableReducer from './reducers/TestVariable';
 import tagsList from './reducers/tagsList';
 import placesList from './reducers/placesList';
 
