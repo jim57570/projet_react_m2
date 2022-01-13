@@ -59,14 +59,14 @@ const Places = ({ navigation, testVariable, dispatch }) => {
         navigation.navigate("Add New Place");
     };
 
-    const navigateToLocalisationDetails = (localisationID) => {
-        navigation.navigate("ViewLocalisationDetail", { localisationID });
+    const navigateToLocalisationDetails = (item) => {
+        navigation.navigate("ViewPlacesDetails", { item });
     };
 
     return (
         <Layout style={styles.container}>
             <View style={styles.fenetremap}>
-                <Carte localisation={localisation} />
+                <Carte localisation={localisation} style={styles.carte}/>
                 <Button style={styles.space} onPress={navigateToAddNewPlace}>
                     Add New Place
                 </Button>
@@ -101,4 +101,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    carte: {
+        height: "70%",
+    }
 });

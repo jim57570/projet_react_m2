@@ -10,7 +10,7 @@ import { BottomNavigation, BottomNavigationTab, Icon, useTheme } from '@ui-kitte
 import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
 import Search from "../components/Search"
-import Localisation from "../components/Localisation"
+import PlacesDetails from "../components/PlacesDetails"
 
 
 
@@ -60,8 +60,8 @@ function VuePlacesScreen() {
                 }}
             />
             <VuePlacesNavigation.Screen
-                name="ViewLocalisationDetail"
-                component={Localisation}
+                name="ViewPlacesDetails"
+                component={PlacesDetails}
             />
         </VuePlacesNavigation.Navigator>
     )

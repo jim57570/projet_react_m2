@@ -3,9 +3,7 @@ import { View, StyleSheet, Text } from 'react-native';
 
 /* import { getRestaurantDetails } from '../api/zomato'; */
 
-const Localisation = ({route}) => {
-
-  const [localisation, setLocalisation] = useState(null);
+const PlacesDetails = ({route}) => {
 
   useEffect(() => {
     console.log(route)
@@ -31,7 +29,7 @@ const Localisation = ({route}) => {
   )
 };
 
-export default Localisation;
+export default PlacesDetails;
 
 const styles = StyleSheet.create({
   container: {
