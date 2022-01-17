@@ -55,7 +55,7 @@ const Places = ({ navigation, placesList, dispatch }) => {
 {/* <Carte localisation={placesList} style={styles.carte} /> */}
                 </View>
                 
-                <View>
+                <View style={styles.bottom}>
                     <Button style={styles.space} onPress={navigateToAddNewPlace}>
                         Add New Place
                     </Button>
@@ -87,5 +87,8 @@ const styles = StyleSheet.create({
     },
     carte: {
         height: "70%",
+    },
+    bottom: {
+        height: "30%",
     }
 });

@@ -38,6 +38,10 @@ const NewPlace = ({ placesList, dispatch }) => {
         <Icon name='edit-outline' {...props} />
     );
 
+    const navigateToPlaces = () => {
+        navigation.navigate("Places");
+    };
+
     //lors d'une saisie sur le champ adresse
     const onChangeText = (query) => {
         setAddress(query);
@@ -74,11 +78,15 @@ const NewPlace = ({ placesList, dispatch }) => {
                 "latitudeDelta": 1,
                 "longitudeDelta": 1,
             },
+            "tags": [
+                'Restaurant',
+                'Bar'
+            ],
             "description": description
         };
         const action = {type: 'ADD_PLACE', value: newPlace};
         dispatch(action); // dispatch est injectée par Redux dans les props du composant
-
+        navigateToPlaces();
         //console.log(placesList);
     };
 

@@ -1,4 +1,13 @@
-const initialState = { tags: [] }
+const initialState = { tags: [
+    {
+        nom: "Restaurant",
+        icon: '🍴',
+    },
+    {
+        nom: "Bar",
+        icon: '🍺'
+    },
+] }
 
 //TODO faire update tag
 
