@@ -1,17 +1,31 @@
-import React, { useState } from 'react';
-import { Layout, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem } from '@ui-kitten/components';
+import React, { useEffect, useState } from 'react';
+import { Layout, Text, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem, List, ListItem } from '@ui-kitten/components';
 import { StyleSheet, View, Image } from 'react-native';
 import Assets from '../definitions/Assets';
+import Toast from 'react-native-root-toast';
 
 import { connect } from 'react-redux';
 import { autoComplete, geocoding } from '../api/Here';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const NewPlace = ({ placesList, dispatch }) => {
+const NewPlace = ({ placesList, dispatch, navigation, route }) => {
 
+    useEffect(() => {
+        if(route.params?.list) {
+            console.log(route.params.list);
+            SetTags(route.params.list);
+        }
+    }, [route.params?.list])
+    
     //state pour le formulaire
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [address, setAddress] = useState('');
+
+    const oui = true;
+
+    //liste des tags selectionnes
+    const [tags, SetTags] = useState([]);
 
     //liste d'adresses pour l'autocompletion
     const [addressData, setAddressData] = useState([]);
@@ -62,13 +76,14 @@ const NewPlace = ({ placesList, dispatch }) => {
     const addPlace = async () => {
         //TODO verification formulaire
         //TODO verification retour API
+        /*
         const res = await geocoding(address);
 
         //constitution de notre objet Lieu
         const newPlace = {
             "nom": name,
             "loc": address,
-            "cordonnee": {
+            "coordonnee": {
                 "latitude": res.items[0].position.lat,
                 "longitude": res.items[0].position.lng,
                 "latitudeDelta": 1,
@@ -79,8 +94,20 @@ const NewPlace = ({ placesList, dispatch }) => {
         const action = {type: 'ADD_PLACE', value: newPlace};
         dispatch(action); // dispatch est injectée par Redux dans les props du composant
 
-        //console.log(placesList);
+        let toast = Toast.show('Place saved !', {
+            duration: Toast.durations.LONG,
+        });
+
+        //console.log(placesList);*/
+        console.log(tags);
     };
+
+    const renderTags = ({item, index}) => (
+        <ListItem
+            key={index}
+            title={item.name}
+        />
+    );
 
     return (
         <Layout style={styles.container}>
@@ -100,7 +127,7 @@ const NewPlace = ({ placesList, dispatch }) => {
                 onChangeText={nextDescription => setDescription(nextDescription)}
                 style={styles.input}
             />
-            <Select
+            {/*<Select
                 placeholder='Tags'
                 multiSelect={true}
                 selectedIndex={selectedIndex}
@@ -110,7 +137,17 @@ const NewPlace = ({ placesList, dispatch }) => {
                 <SelectItem title='Option 1' />
                 <SelectItem title='Option 2' />
                 <SelectItem title='Option 3' />
-            </Select>
+            </Select>*/}
+            <TouchableOpacity onPress={() => {navigation.navigate("Tags", {list: [{"name": "OuI"}]})}}>
+                <Button>
+                    Ajouter des tags
+                </Button>
+                <List
+                    data={tags}
+                    renderItem={renderTags}
+                />
+            </TouchableOpacity>
+
             <Autocomplete
                 placeholder='Address'
                 value={address}
@@ -120,10 +157,9 @@ const NewPlace = ({ placesList, dispatch }) => {
                 style={styles.input}>
                 {addressData.map(renderAutocomplete)}
             </Autocomplete>
-            <Button
-                title='Add place'
-                onPress={addPlace}
-            />
+            <Button onPress={addPlace}>
+                Add place
+            </Button>
 
         </Layout>
     );

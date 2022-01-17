@@ -1,10 +1,10 @@
 const initialState = { places: [] }
 
-//TODO faire update lieux
 
 //Reducer pour gerer la liste des places
 function placesReducer(state = initialState, action) {
-    let nextState
+    let nextState;
+    let index;
     switch (action.type) {
         //Ajout d'un lieu
         case 'ADD_PLACE': 
@@ -16,7 +16,7 @@ function placesReducer(state = initialState, action) {
         //Suppression d'un lieu
         case 'DELETE_PLACE':
             nextState = state;
-            const index = nextState.places.indexOf(action.value);
+            index = nextState.places.indexOf(action.value);
             if (index != -1) {
                 nextState.places.splice(index, 1);
             }
@@ -24,6 +24,9 @@ function placesReducer(state = initialState, action) {
         //Modification d'un lieu
         case 'UPDATE_PLACE':
             nextState = state;
+            index = nextState.places.indexOf(action.index);
+            if (index != -1)
+                nextState[index] = action.value;
             return nextState || state
         //Reset de la liste
         case 'RESET_PLACE':

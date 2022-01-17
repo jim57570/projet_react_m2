@@ -11,6 +11,7 @@ import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
 import Search from "../components/Search"
 import Localisation from "../components/Localisation"
+import Tags from '../components/Tags';
 
 
 
@@ -62,6 +63,13 @@ function VuePlacesScreen() {
             <VuePlacesNavigation.Screen
                 name="ViewLocalisationDetail"
                 component={Localisation}
+            />
+            <VuePlacesNavigation.Screen
+                name="Tags"
+                component={Tags}
+                screenOptions={{
+                    headerShown: true,
+                }}
             />
         </VuePlacesNavigation.Navigator>
     )

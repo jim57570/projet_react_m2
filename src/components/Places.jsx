@@ -82,7 +82,6 @@ const Places = ({ navigation }) => {
 };
 
 
-
 export default Places;
 
 const styles = StyleSheet.create({
