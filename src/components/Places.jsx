@@ -10,18 +10,17 @@ const Places = ({ navigation, placesList, dispatch }) => {
     const [listPlaces, setListPlaces] = useState(placesList);
     const [isRefreshing, setIsRefreshing] = useState(false);
 
-    console.log(placesList);
 
     useEffect(() => {
         setListPlaces(placesList);
     }, [placesList]);
 
-    const renderItem = ({ item, index }) => (
+    const renderItem = ({ item }) => (
         <ListItem
-            title={`${item.loc} ${index + 1}`}
-            description={`${item.nom} ${index + 1}`}
+            title={item.loc}
+            description={item.nom}
             // accessoryRight={renderItemAccessory}
-            onPress={item => navigateToLocalisationDetails(item)}
+            onPress={() => navigateToLocalisationDetails(item)}
         />
     );
 

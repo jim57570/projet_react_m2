@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-
-/* import { getRestaurantDetails } from '../api/zomato'; */
+import { Layout, Text, Button, List, Divider, ListItem } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
 
 const PlacesDetails = ({route}) => {
+  const [place, setPlace] = useState(route.params.item);
+  
 
   useEffect(() => {
-    console.log(route)
+    console.log(route.params.item);
+    setPlace(route.params.item);
   }, []); // Uniquement à l'initialisation
 
 /*
@@ -21,11 +23,14 @@ const PlacesDetails = ({route}) => {
 
 
   return (
-    <View style={styles.container}>
-      { <Text>
-           Je suis la localisation {route.params.localisationID}
-      </Text> }
-    </View>
+    <Layout style={styles.container}>
+      <Text>
+           {place.nom}
+      </Text>
+      <Text>
+           {place.description}
+      </Text>
+    </Layout>
   )
 };
 
@@ -34,7 +39,5 @@ export default PlacesDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
