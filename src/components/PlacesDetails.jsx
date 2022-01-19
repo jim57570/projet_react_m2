@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Text, Button, List, Divider, ListItem, Icon, Input } from '@ui-kitten/components';
+import { Layout, Text, Button, Icon } from '@ui-kitten/components';
 import { StyleSheet, Share, Linking } from 'react-native';
 import { connect } from 'react-redux';
+import { useIsFocused } from "@react-navigation/native"; // https://stackoverflow.com/questions/60182942/useeffect-not-called-in-react-native-when-back-to-screen
 
 const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
 
   const index = route.params.index;
   const [place, setPlace] = useState(placesList[index]);
+  const isFocused = useIsFocused(); 
 
   useEffect(() => {
-    console.log("placesList details: ")
-    console.log(placesList)
     setPlace(placesList[index]);
-  }, [placesList]);
-
-
-  useEffect(() => {
     navigation.setOptions({
-      headerTitle: place.nom,
+      headerTitle: placesList[index]?.nom,
       headerRight: () => (
         <Button
           style={styles.buttonShare}
@@ -30,24 +26,24 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
         </Button>
       )
     });
-  }, []); // Uniquement à l'initialisation
+  }, [isFocused]);
 
+  // Icône Trash
   const renderIconTrash = (props) => (
     <Icon name='trash-2-outline' {...props} />
   );
 
+  // Icône Edit
   const renderIconEdit = (props) => (
     <Icon name='edit' {...props} />
   );
 
+  // Icône Map
   const renderIconMap = (props) => (
     <Icon name='map' {...props} />
   );
 
-  const navigateToPlaces = () => {
-    navigation.navigate("Places");
-  };
-
+  // Ouvre l'application map par défaut du mobile en fonction des coordonnées GPS du lieu
   const openMap = () => {
     const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
     const latLng = `${place.coordonnee.latitude},${place.coordonnee.longitude}`;
@@ -59,6 +55,7 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
     Linking.openURL(url);
   };
 
+  // Partage les informations du lieu
   const sharePlace = async () => {
     try {
       await Share.share({
@@ -70,25 +67,23 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
     }
   };
 
-  //suppression d'un lieu
+  // suppression d'un lieu
   const deletePlace = async () => {
     const action = { type: 'DELETE_PLACE', value: place };
-    dispatch(action); // dispatch est injectée par Redux dans les props du composant
+    dispatch(action);
     navigation.navigate("Places");
   };
 
-  //modifications d'un lieu
+  // modifications d'un lieu
   const editPlace = () => {
     navigation.navigate("Edit Place", { index });
-    // const action = { type: 'UPDATE_PLACE', value: place };
-    // dispatch(action); // dispatch est injectée par Redux dans les props du composant
   };
 
 
   return (
     <Layout style={styles.container}>
       <Text>
-        {place.description}
+        {place?.description}
       </Text>
       <Layout style={styles.containerTags}>
 
@@ -100,7 +95,7 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
           name='pin-outline'
         />
         <Text>
-          {place.loc}
+          {place?.loc}
         </Text>
       </Layout>
       <Layout style={styles.containerButton}>

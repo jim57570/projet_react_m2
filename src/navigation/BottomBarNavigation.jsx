@@ -70,7 +70,7 @@ function VuePlacesScreen() {
             />
         </VuePlacesNavigation.Navigator>
     )
-};
+}
 
 // Affiche la Vue Search
 function VueSearch() {
@@ -94,7 +94,7 @@ function VueSearch() {
             />
         </VueSearchNavigation.Navigator>
     )
-};
+}
 
 // Rendue de la Barre de navigation
 const BottomTabBar = ({ navigation, state }) => (
@@ -107,7 +107,7 @@ const BottomTabBar = ({ navigation, state }) => (
 );
 
 // Main Barre de navigation
-const BottomBarNavigation = (props) => {
+const BottomBarNavigation = () => {
     const TabNavigation = createBottomTabNavigator();
     return (
         <TabNavigation.Navigator

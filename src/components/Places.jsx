@@ -1,47 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Text, Button, List, Divider, ListItem } from '@ui-kitten/components';
-import { StyleSheet, View, Dimensions, FlatList } from 'react-native';
+import { Layout, Button, List, Divider, ListItem, Icon } from '@ui-kitten/components';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
+import { useIsFocused } from "@react-navigation/native";
 
 import Carte from "./Carte";
 
-const Places = ({ navigation, placesList, dispatch }) => {
+const Places = ({ navigation, placesList }) => {
 
     const [listPlaces, setListPlaces] = useState(placesList);
-    const [isRefreshing, setIsRefreshing] = useState(false);
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         setListPlaces(placesList);
-    }, [placesList]);
+    }, [placesList, isFocused]);
+
+    // Icône Zoom
+    const renderIconZoom = (props) => (
+        <Icon name='pin-outline' {...props} />
+    );
+
+    // Icône Zoom
+    const buttonZoom = (props) => {
+        return (
+            <Layout>
+                <Button
+                    accessoryRight={renderIconZoom}>
+                </Button>
+            </Layout>
+
+        );
+    };
 
     const renderItem = ({ item, index }) => (
         <ListItem
             title={item.loc}
             key={index}
             description={item.nom}
-            // accessoryRight={renderItemAccessory}
+            accessoryRight={buttonZoom}
             onPress={() => navigateToLocalisationDetails(item, index)}
         />
     );
-
-    // const refreshFavRestaurants = () => {
-    //     setIsRefreshing(true);
-    //     setIsError(false);
-    //     let restaurants = [];
-    //     try {
-    //       for (const id of favRestaurants) {
-    //         const zomatoSearchResult = await getRestaurantDetails(id)
-    //         restaurants.push(zomatoSearchResult);
-    //       };
-    //       setRestaurants(restaurants);
-    //     } catch (error) {
-    //       setIsError(true);
-    //       setRestaurants([]);
-    //     }
-    //     setIsRefreshing(false);
-    //   };
-
-    
 
     const navigateToAddNewPlace = () => {
         navigation.navigate("Add New Place");
@@ -62,7 +61,7 @@ const Places = ({ navigation, placesList, dispatch }) => {
                     Add New Place
                 </Button>
                 <List
-                    data={placesList}
+                    data={listPlaces}
                     // keyExtractor={(item) => item.index.toString()}
                     ItemSeparatorComponent={Divider}
                     renderItem={renderItem}
@@ -73,8 +72,6 @@ const Places = ({ navigation, placesList, dispatch }) => {
 };
 
 const mapStateToProps = (state) => {
-    // console.log("STATE: ");
-    // console.log(state);
     return {
         placesList: state.ReducerPlaces.places
     }

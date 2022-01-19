@@ -5,19 +5,22 @@ import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { autoComplete, geocoding } from '../api/Here';
 
-const EditPlace = ({ route, navigation, navigation: {goBack}, placesList, dispatch }) => {
+const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, dispatch }) => {
 
-    //state pour le formulaire
+    // State pour le formulaire
     const [name, setName] = useState();
     const [description, setDescription] = useState();
     const [address, setAddress] = useState();
 
-    //liste d'adresses pour l'autocompletion
+    // Liste d'adresses pour l'autocompletion
     const [addressData, setAddressData] = useState([]);
 
+    // Index de la place
     const index = route.params.index;
+
+    // Place
     const [place, setPlace] = useState(placesList[index]);
-    
+
 
     useEffect(() => {
         setName(place.nom);
@@ -26,9 +29,9 @@ const EditPlace = ({ route, navigation, navigation: {goBack}, placesList, dispat
         navigation.setOptions({
             headerTitle: "Edit \"" + place.nom + "\"",
         });
-    }, []); // Uniquement à l'initialisation
+    }, []);
 
-    //appel api pour avoir liste autocompletion adresse
+    // Appel api pour avoir liste autocompletion adresse
     const fetchAddress = async () => {
         setAddressData([]);
         const res = await autoComplete(address);
@@ -39,29 +42,35 @@ const EditPlace = ({ route, navigation, navigation: {goBack}, placesList, dispat
         new IndexPath(0),
         new IndexPath(1),
     ]);
+
+    // Icône Tags
     const renderIconTags = (props) => (
         <Icon name='pin-outline' {...props} />
     );
+
+    // Icône Address
     const renderIconAddress = (props) => (
         <Icon name='pricetags-outline' {...props} />
     );
+
+    // Icône Text
     const renderIconText = (props) => (
         <Icon name='edit-outline' {...props} />
     );
 
-    //lors d'une saisie sur le champ adresse
+    // Lors d'une saisie sur le champ adresse
     const onChangeText = (query) => {
         setAddress(query);
         if (address != '')
             fetchAddress();
     };
 
-    //choix autocompletion sur le champ adresse
+    // Choix autocompletion sur le champ adresse
     const onSelect = (indexSelect) => {
         setAddress(addressData[indexSelect].address.label);
     };
 
-    //affichage autocompletion adresse
+    // Affichage autocompletion adresse
     const renderAutocomplete = (item, indexSelect) => (
         <AutocompleteItem
             key={indexSelect}
@@ -69,7 +78,7 @@ const EditPlace = ({ route, navigation, navigation: {goBack}, placesList, dispat
         />
     );
 
-    //modifications d'un lieu
+    // Modifications d'un lieu
     const editPlace = async () => {
         const res = await geocoding(address);
         //TODO verification formulaire
@@ -91,11 +100,10 @@ const EditPlace = ({ route, navigation, navigation: {goBack}, placesList, dispat
             "description": description
         };
 
-        const action = { type: 'UPDATE_PLACE', value: { index: index, place: newPlace }};
-        dispatch(action); // dispatch est injectée par Redux dans les props du composant
+        const action = { type: 'UPDATE_PLACE', value: { index: index, place: newPlace } };
+        dispatch(action);
         setPlace(newPlace);
         navigation.navigate("ViewPlacesDetails", { index });
-        // goBack();
     };
 
     return (

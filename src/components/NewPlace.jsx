@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem } from '@ui-kitten/components';
-import { StyleSheet, View, Image } from 'react-native';
-import Assets from '../definitions/Assets';
+import { StyleSheet } from 'react-native';
 
 import { connect } from 'react-redux';
 import { autoComplete, geocoding } from '../api/Here';
@@ -28,12 +27,18 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
         new IndexPath(0),
         new IndexPath(1),
     ]);
+
+    // Icône Tags
     const renderIconTags = (props) => (
         <Icon name='pin-outline' {...props} />
     );
+
+    // Icône Address
     const renderIconAddress = (props) => (
         <Icon name='pricetags-outline' {...props} />
     );
+
+    // Icône Text
     const renderIconText = (props) => (
         <Icon name='edit-outline' {...props} />
     );
@@ -81,9 +86,8 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
             "description": description
         };
         const action = {type: 'ADD_PLACE', value: newPlace};
-        dispatch(action); // dispatch est injectée par Redux dans les props du composant
+        dispatch(action);
         navigation.navigate("Places");
-        //console.log(placesList);
     };
 
     return (
