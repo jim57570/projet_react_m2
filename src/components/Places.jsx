@@ -10,17 +10,17 @@ const Places = ({ navigation, placesList, dispatch }) => {
     const [listPlaces, setListPlaces] = useState(placesList);
     const [isRefreshing, setIsRefreshing] = useState(false);
 
-
     useEffect(() => {
         setListPlaces(placesList);
     }, [placesList]);
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item, index }) => (
         <ListItem
             title={item.loc}
+            key={index}
             description={item.nom}
             // accessoryRight={renderItemAccessory}
-            onPress={() => navigateToLocalisationDetails(item)}
+            onPress={() => navigateToLocalisationDetails(item, index)}
         />
     );
 
@@ -41,38 +41,42 @@ const Places = ({ navigation, placesList, dispatch }) => {
     //     setIsRefreshing(false);
     //   };
 
+    
+
     const navigateToAddNewPlace = () => {
         navigation.navigate("Add New Place");
     };
 
-    const navigateToLocalisationDetails = (item) => {
-        navigation.navigate("ViewPlacesDetails", { item });
+    const navigateToLocalisationDetails = (item, index) => {
+        navigation.navigate("ViewPlacesDetails", { index });
     };
 
     return (
         <Layout style={styles.container}>
-                <View style={styles.carte}>
-{/* <Carte localisation={placesList} style={styles.carte} /> */}
-                </View>
-                
-                <View style={styles.bottom}>
-                    <Button style={styles.space} onPress={navigateToAddNewPlace}>
-                        Add New Place
-                    </Button>
-                    <List
-                        data={placesList}
-                        keyExtractor={(item) => item.nom.toString()}
-                        ItemSeparatorComponent={Divider}
-                        renderItem={renderItem}
-                    />
-                </View>
+            <View style={styles.carte}>
+                {/* <Carte localisation={placesList} style={styles.carte} /> */}
+            </View>
+
+            <View style={styles.bottom}>
+                <Button style={styles.space} onPress={navigateToAddNewPlace}>
+                    Add New Place
+                </Button>
+                <List
+                    data={placesList}
+                    // keyExtractor={(item) => item.index.toString()}
+                    ItemSeparatorComponent={Divider}
+                    renderItem={renderItem}
+                />
+            </View>
         </Layout>
     );
 };
 
 const mapStateToProps = (state) => {
+    // console.log("STATE: ");
+    // console.log(state);
     return {
-        placesList: state.places.places
+        placesList: state.ReducerPlaces.places
     }
 };
 

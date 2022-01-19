@@ -11,6 +11,7 @@ import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
 import Search from "../components/Search"
 import PlacesDetails from "../components/PlacesDetails"
+import EditPlace from "../components/EditPlace"
 
 
 
@@ -62,6 +63,10 @@ function VuePlacesScreen() {
             <VuePlacesNavigation.Screen
                 name="ViewPlacesDetails"
                 component={PlacesDetails}
+            />
+            <VuePlacesNavigation.Screen
+                name="Edit Place"
+                component={EditPlace}
             />
         </VuePlacesNavigation.Navigator>
     )

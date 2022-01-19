@@ -11,7 +11,7 @@ const configPersist = {
 };
 
 //création combine reducer pour ajouter le reducer des tags et celui des lieux
-const allReducers = combineReducers({tags: tagsList, places: placesList})
+const allReducers = combineReducers({tags: tagsList, ReducerPlaces: placesList})
 
 const reducerPersist = persistReducer(configPersist, allReducers);
 

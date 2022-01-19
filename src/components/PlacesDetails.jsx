@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Layout, Text, Button, List, Divider, ListItem, Icon, Input } from '@ui-kitten/components';
 import { StyleSheet, Share, Linking } from 'react-native';
+import { connect } from 'react-redux';
 
-const PlacesDetails = ({ navigation, route }) => {
-  const [place, setPlace] = useState(route.params.item);
+const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
+
+  const index = route.params.index;
+  const [place, setPlace] = useState(placesList[index]);
+
+  useEffect(() => {
+    console.log("placesList details: ")
+    console.log(placesList)
+    setPlace(placesList[index]);
+  }, [placesList]);
+
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: route.params.item.nom,
+      headerTitle: place.nom,
       headerRight: () => (
         <Button
           style={styles.buttonShare}
@@ -20,7 +30,6 @@ const PlacesDetails = ({ navigation, route }) => {
         </Button>
       )
     });
-    setPlace(route.params.item);
   }, []); // Uniquement à l'initialisation
 
   const renderIconTrash = (props) => (
@@ -35,12 +44,8 @@ const PlacesDetails = ({ navigation, route }) => {
     <Icon name='map' {...props} />
   );
 
-  const deletePlace = () => {
-
-  };
-
-  const modifyPlace = () => {
-
+  const navigateToPlaces = () => {
+    navigation.navigate("Places");
   };
 
   const openMap = () => {
@@ -56,25 +61,28 @@ const PlacesDetails = ({ navigation, route }) => {
 
   const sharePlace = async () => {
     try {
-      const result = await Share.share({
+      await Share.share({
         message:
           'Regarde cet endroit \nNom: ' + place.nom + '\n' + place.description + '\n\n' + place.loc + '\n\nCoordonnées: \n   Lattitude: ' + place.coordonnee.latitude + '\n   Longitude: ' + place.coordonnee.longitude,
       });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
     } catch (error) {
       alert(error.message);
     }
   };
 
+  //suppression d'un lieu
+  const deletePlace = async () => {
+    const action = { type: 'DELETE_PLACE', value: place };
+    dispatch(action); // dispatch est injectée par Redux dans les props du composant
+    navigation.navigate("Places");
+  };
 
+  //modifications d'un lieu
+  const editPlace = () => {
+    navigation.navigate("Edit Place", { index });
+    // const action = { type: 'UPDATE_PLACE', value: place };
+    // dispatch(action); // dispatch est injectée par Redux dans les props du composant
+  };
 
 
   return (
@@ -100,7 +108,7 @@ const PlacesDetails = ({ navigation, route }) => {
           style={styles.buttonEditDelete}
           status='success'
           accessoryRight={renderIconEdit}
-          onPress={modifyPlace}>
+          onPress={editPlace}>
           Edit
         </Button>
         <Button
@@ -120,7 +128,13 @@ const PlacesDetails = ({ navigation, route }) => {
   )
 };
 
-export default PlacesDetails;
+const mapStateToProps = (state) => {
+  return {
+    placesList: state.ReducerPlaces.places
+  }
+};
+
+export default connect(mapStateToProps)(PlacesDetails);
 
 const styles = StyleSheet.create({
   container: {

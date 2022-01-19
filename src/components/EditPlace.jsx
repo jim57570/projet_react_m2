@@ -1,20 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem } from '@ui-kitten/components';
-import { StyleSheet, View, Image } from 'react-native';
-import Assets from '../definitions/Assets';
+import { StyleSheet } from 'react-native';
 
 import { connect } from 'react-redux';
 import { autoComplete, geocoding } from '../api/Here';
 
-const NewPlace = ({ placesList, navigation, dispatch }) => {
+const EditPlace = ({ route, navigation, navigation: {goBack}, placesList, dispatch }) => {
 
     //state pour le formulaire
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [address, setAddress] = useState('');
+    const [name, setName] = useState();
+    const [description, setDescription] = useState();
+    const [address, setAddress] = useState();
 
     //liste d'adresses pour l'autocompletion
     const [addressData, setAddressData] = useState([]);
+
+    const index = route.params.index;
+    const [place, setPlace] = useState(placesList[index]);
+    
+
+    useEffect(() => {
+        setName(place.nom);
+        setDescription(place.description);
+        setAddress(place.loc)
+        navigation.setOptions({
+            headerTitle: "Edit \"" + place.nom + "\"",
+        });
+    }, []); // Uniquement à l'initialisation
 
     //appel api pour avoir liste autocompletion adresse
     const fetchAddress = async () => {
@@ -22,7 +34,6 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
         const res = await autoComplete(address);
         setAddressData(res.items);
     };
-
 
     const [selectedIndex, setSelectedIndex] = React.useState([
         new IndexPath(0),
@@ -41,28 +52,27 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
     //lors d'une saisie sur le champ adresse
     const onChangeText = (query) => {
         setAddress(query);
-        if(address != '')
+        if (address != '')
             fetchAddress();
     };
 
     //choix autocompletion sur le champ adresse
-    const onSelect = (index) => {
-        setAddress(addressData[index].address.label);
+    const onSelect = (indexSelect) => {
+        setAddress(addressData[indexSelect].address.label);
     };
 
     //affichage autocompletion adresse
-    const renderAutocomplete = (item, index) => (
+    const renderAutocomplete = (item, indexSelect) => (
         <AutocompleteItem
-            key={index}
+            key={indexSelect}
             title={item.address.label}
         />
     );
-    
-    //enregistrement d'un lieu
-    const addPlace = async () => {
-        //TODO verification formulaire
-        //TODO verification retour API
+
+    //modifications d'un lieu
+    const editPlace = async () => {
         const res = await geocoding(address);
+        //TODO verification formulaire
 
         //constitution de notre objet Lieu
         const newPlace = {
@@ -80,10 +90,12 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
             ],
             "description": description
         };
-        const action = {type: 'ADD_PLACE', value: newPlace};
+
+        const action = { type: 'UPDATE_PLACE', value: { index: index, place: newPlace }};
         dispatch(action); // dispatch est injectée par Redux dans les props du composant
-        navigation.navigate("Places");
-        //console.log(placesList);
+        setPlace(newPlace);
+        navigation.navigate("ViewPlacesDetails", { index });
+        // goBack();
     };
 
     return (
@@ -108,7 +120,7 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
                 placeholder='Tags'
                 multiSelect={true}
                 selectedIndex={selectedIndex}
-                onSelect={index => setSelectedIndex(index)}
+                onSelect={indexSelect => setSelectedIndex(indexSelect)}
                 style={styles.input}
                 accessoryLeft={renderIconTags}>
                 <SelectItem title='Option 1' />
@@ -126,7 +138,7 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
             </Autocomplete>
             <Button
                 title='Add place'
-                onPress={addPlace}
+                onPress={editPlace}
             />
 
         </Layout>
@@ -137,9 +149,9 @@ const mapStateToProps = (state) => {
     return {
         placesList: state.ReducerPlaces.places
     }
-}
+};
 
-export default connect(mapStateToProps)(NewPlace);
+export default connect(mapStateToProps)(EditPlace);
 
 const styles = StyleSheet.create({
     container: {
