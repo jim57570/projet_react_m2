@@ -7,9 +7,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { BottomNavigation, BottomNavigationTab, Icon, useTheme } from '@ui-kitten/components';
 
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faGlassCheers } from '@fortawesome/free-solid-svg-icons'
+
 import Places from "../components/Places"
 import NewPlace from "../components/NewPlace"
 import Search from "../components/Search"
+import Activities from "../components/Activities"
 import PlacesDetails from "../components/PlacesDetails"
 import EditPlace from "../components/EditPlace"
 import Tags from '../components/Tags';
@@ -28,6 +32,12 @@ const PlacesIcon = (props) => (
 const SearchIcon = (props) => (
     <Icon {...props} name='search-outline' />
 );
+
+// Icon search
+const GlassCheersIcon = (props) => {
+    return (
+    <FontAwesomeIcon icon={faGlassCheers} size={props.style.width} color={props.style.tintColor} />
+)};
 
 // Affiche la Vue Places
 function VuePlacesScreen() {
@@ -104,6 +114,30 @@ function VueSearch() {
     )
 }
 
+// Affiche la Vue Activities
+function VueActivities() {
+    const VueSearchNavigation = createStackNavigator();
+    const theme = useTheme();
+    return (
+        <VueSearchNavigation.Navigator
+            initialRouteName="Activities"
+            screenOptions={{
+                headerShown: true,
+                headerStyle: {
+                    backgroundColor: theme['background-basic-color-1'],
+                    borderColor: theme['border-basic-color-1']
+                },
+                headerTintColor: theme['text-basic-color'],
+            }}
+        >
+            <VueSearchNavigation.Screen
+                name="Activities"
+                component={Activities}
+            />
+        </VueSearchNavigation.Navigator>
+    )
+}
+
 // Rendue de la Barre de navigation
 const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigation
@@ -111,6 +145,7 @@ const BottomTabBar = ({ navigation, state }) => (
         onSelect={index => navigation.navigate(state.routeNames[index])}>
         <BottomNavigationTab title='Places' icon={PlacesIcon} style={styles.space} />
         <BottomNavigationTab title='Search' icon={SearchIcon} style={styles.space} />
+        <BottomNavigationTab title='Activities' icon={GlassCheersIcon} style={styles.space} />
     </BottomNavigation>
 );
 
@@ -130,6 +165,10 @@ const BottomBarNavigation = () => {
             <TabNavigation.Screen
                 name="ViewSearch"
                 component={VueSearch}
+            />
+            <TabNavigation.Screen
+                name="ViewActivities"
+                component={VueActivities}
             />
         </TabNavigation.Navigator>
     );

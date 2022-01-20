@@ -68,9 +68,9 @@ const Places = ({ navigation, placesList }) => {
                 <Button style={styles.space} onPress={navigateToAddNewPlace}>
                     Add New Place
                 </Button>
+                
                 <List
                     data={listPlaces}
-                    keyExtractor={(item, index) => index}
                     ItemSeparatorComponent={Divider}
                     renderItem={renderItem}
                 />
