@@ -16,19 +16,19 @@ const Places = ({ navigation, placesList }) => {
     }, [placesList, isFocused]);
 
     // Icône Zoom
-    const renderIconZoom = (props) => (
-        <Icon name='pin-outline' {...props} />
-    );
-
-    // Icône Zoom
     const buttonZoom = (props) => {
         return (
             <Layout>
                 <Button
-                    accessoryRight={renderIconZoom}>
+                    style={styles.buttonZoom}>
+                    <Icon
+                        style={styles.iconShare}
+                        // fill='#3366FF'
+                        fill='#FFFFFF'
+                        name='pin'
+                    />
                 </Button>
             </Layout>
-
         );
     };
 
@@ -91,5 +91,16 @@ const styles = StyleSheet.create({
     },
     bottom: {
         height: "30%",
+    },
+    buttonZoom: {
+        borderColor: 'transparent',
+        // backgroundColor: 'transparent',
+        height: 10,
+        flex: 1,
+        justifyContent: 'center',
+        width: 15
+    },
+    iconShare: {
+        backgroundColor: '#FFFF',
     }
 });
