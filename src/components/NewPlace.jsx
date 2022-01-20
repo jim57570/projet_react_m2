@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
-import { Layout, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem } from '@ui-kitten/components';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Layout, Text, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem, List, ListItem } from '@ui-kitten/components';
+import { StyleSheet, View} from 'react-native';
+import Toast from 'react-native-root-toast';
 
 import { connect } from 'react-redux';
 import { autoComplete, geocoding } from '../api/Here';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const NewPlace = ({ placesList, navigation, dispatch }) => {
+const NewPlace = ({ placesList, dispatch, navigation, route }) => {
 
+    useEffect(() => {
+        if(route.params?.list) {
+            //console.log(route.params.list);
+            SetTags(route.params.list);
+        }
+    }, [route.params?.list])
+    
     //state pour le formulaire
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [address, setAddress] = useState('');
+
+    const oui = true;
+
+    //liste des tags selectionnes
+    const [tags, SetTags] = useState([]);
 
     //liste d'adresses pour l'autocompletion
     const [addressData, setAddressData] = useState([]);
@@ -30,12 +44,12 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
 
     // Icône Tags
     const renderIconTags = (props) => (
-        <Icon name='pin-outline' {...props} />
+        <Icon name='pricetags-outline' {...props} />
     );
 
     // Icône Address
     const renderIconAddress = (props) => (
-        <Icon name='pricetags-outline' {...props} />
+        <Icon name='pin-outline' {...props} />
     );
 
     // Icône Text
@@ -55,6 +69,12 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
         setAddress(addressData[index].address.label);
     };
 
+    //DEBUG ONLY
+    const resetPlace = () => {
+        const action = {type: 'RESET_PLACE'};
+        dispatch(action);
+    }
+
     //affichage autocompletion adresse
     const renderAutocomplete = (item, index) => (
         <AutocompleteItem
@@ -67,6 +87,7 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
     const addPlace = async () => {
         //TODO verification formulaire
         //TODO verification retour API
+        
         const res = await geocoding(address);
 
         //constitution de notre objet Lieu
@@ -79,16 +100,25 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
                 "latitudeDelta": 1,
                 "longitudeDelta": 1,
             },
-            "tags": [
-                'Restaurant',
-                'Bar'
-            ],
-            "description": description
+            "description": description,
+            "tags": tags
         };
         const action = {type: 'ADD_PLACE', value: newPlace};
         dispatch(action);
+
+        let toast = Toast.show('Place saved !', {
+            duration: Toast.durations.LONG,
+        });
+
         navigation.navigate("Places");
     };
+
+    const renderTags = ({item, index}) => (
+        <ListItem
+            key={index}
+            title={item.name}
+        />
+    );
 
     return (
         <Layout style={styles.container}>
@@ -108,17 +138,19 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
                 onChangeText={nextDescription => setDescription(nextDescription)}
                 style={styles.input}
             />
-            <Select
-                placeholder='Tags'
-                multiSelect={true}
-                selectedIndex={selectedIndex}
-                onSelect={index => setSelectedIndex(index)}
-                style={styles.input}
-                accessoryLeft={renderIconTags}>
-                <SelectItem title='Option 1' />
-                <SelectItem title='Option 2' />
-                <SelectItem title='Option 3' />
-            </Select>
+            <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags})}}>
+                <Text>
+                    Tags :
+                </Text>
+                {tags.length == 0 
+                    ?<Text>Empty (click here to add)</Text>
+                    :<List
+                    accessoryLeft={renderIconTags}
+                    data={tags}
+                    renderItem={renderTags}
+                    />
+                }
+            </TouchableOpacity>
             <Autocomplete
                 placeholder='Address'
                 value={address}
@@ -128,10 +160,12 @@ const NewPlace = ({ placesList, navigation, dispatch }) => {
                 style={styles.input}>
                 {addressData.map(renderAutocomplete)}
             </Autocomplete>
-            <Button
-                title='Add place'
-                onPress={addPlace}
-            />
+            <Button onPress={addPlace}>
+                Add place
+            </Button>
+            <Button onPress={resetPlace}>
+                reset list places
+            </Button>
 
         </Layout>
     );
@@ -152,5 +186,8 @@ const styles = StyleSheet.create({
     },
     input: {
         paddingBottom: 10
+    },
+    tagList: {
+        flexDirection: 'row'
     }
 });

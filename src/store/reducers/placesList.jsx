@@ -1,6 +1,5 @@
 const initialState = { places: [] }
 
-//TODO faire update lieux
 
 //Reducer pour gerer la liste des places
 function placesReducer(state = initialState, action) {

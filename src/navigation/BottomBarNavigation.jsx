@@ -12,6 +12,7 @@ import NewPlace from "../components/NewPlace"
 import Search from "../components/Search"
 import PlacesDetails from "../components/PlacesDetails"
 import EditPlace from "../components/EditPlace"
+import Tags from '../components/Tags';
 
 
 
@@ -67,6 +68,13 @@ function VuePlacesScreen() {
             <VuePlacesNavigation.Screen
                 name="Edit Place"
                 component={EditPlace}
+            />
+            <VuePlacesNavigation.Screen
+                name="Tags"
+                component={Tags}
+                screenOptions={{
+                    headerShown: true,
+                }}
             />
         </VuePlacesNavigation.Navigator>
     )
