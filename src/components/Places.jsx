@@ -38,10 +38,10 @@ const Places = ({ navigation, placesList }) => {
     const renderItem = ({ item, index }) => (
         <ListItem
             title={item.loc}
-            key={index}
+            key={item.name}
             description={item.nom}
-            accessoryRight={buttonZoom(item, index)}
-            onPress={() => navigateToLocalisationDetails(item)}
+            accessoryRight={buttonZoom(item)}
+            onPress={() => navigateToLocalisationDetails(index)}
         />
     );
 
@@ -49,7 +49,7 @@ const Places = ({ navigation, placesList }) => {
         navigation.navigate("Add New Place");
     };
 
-    const navigateToLocalisationDetails = (item, index) => {
+    const navigateToLocalisationDetails = (index) => {
         navigation.navigate("ViewPlacesDetails", { index });
     };
 
