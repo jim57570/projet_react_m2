@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Text, Button, Icon } from '@ui-kitten/components';
-import { StyleSheet, Share, Linking } from 'react-native';
+import { Layout, Text, Button, Icon, Divider, useTheme } from '@ui-kitten/components';
+import { StyleSheet, Share, Linking, View } from 'react-native';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faFileAlt, faTags, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons'
 import { useIsFocused } from "@react-navigation/native"; // https://stackoverflow.com/questions/60182942/useeffect-not-called-in-react-native-when-back-to-screen
 
 const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
 
   const index = route.params.index;
   const [place, setPlace] = useState(placesList[index]);
-  const isFocused = useIsFocused(); 
+  const isFocused = useIsFocused();
+  const theme = useTheme();
 
   useEffect(() => {
     setPlace(placesList[index]);
@@ -82,43 +85,69 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
 
   return (
     <Layout style={styles.container}>
-      <Text>
-        {place?.description}
-      </Text>
-      <Layout style={styles.containerTags}>
+      <Layout style={styles.containerInfos}>
+        <Layout style={styles.layout2Container} level='2'>
+          <Layout style={styles.viewTitle} level='2'>
+            <Text style={styles.title}>
+              DESCRIPTION
+            </Text>
+            <FontAwesomeIcon icon={faFileAlt} size={15} color={theme['text-basic-color']} paddingVertical={25} />
+          </Layout>
+          <Divider />
+          <Text style={styles.text}>
+            {place?.description}
+          </Text>
+        </Layout>
 
-      </Layout>
-      <Layout style={styles.containerAdress}>
-        <Icon
-          style={styles.icon}
-          fill='#8F9BB3'
-          name='pin-outline'
-        />
-        <Text>
-          {place?.loc}
-        </Text>
+        <Layout style={styles.layout2Container} level='2'>
+          <Layout style={styles.viewTitle} level='2'>
+            <Text style={styles.title}>
+              TAGS
+            </Text>
+            <FontAwesomeIcon icon={faTags} size={20} color={theme['text-basic-color']} paddingVertical={25} />
+          </Layout>
+          <Divider />
+          <Text style={styles.text}>
+            AFFICHER LES TAGS (en cliquant dessus, recherche de tous les lieux avec un tag identique ?)
+          </Text>
+        </Layout>
+
+        <Layout style={styles.layout2Container} level='2'>
+          <Layout style={styles.viewTitle} level='2'>
+            <Text style={styles.title}>
+              ADDRESS
+            </Text>
+            <FontAwesomeIcon icon={faMapMarkedAlt} size={20} color={theme['text-basic-color']} paddingVertical={25} />
+          </Layout>
+          <Divider />
+          <Text style={styles.text}>
+            {place?.loc}
+          </Text>
+        </Layout>
       </Layout>
       <Layout style={styles.containerButton}>
+        <Layout style={styles.containerButtonEditDelete}>
+          <Button
+            style={styles.buttonEditDelete}
+            status='success'
+            accessoryRight={renderIconEdit}
+            onPress={editPlace}>
+            Edit
+          </Button>
+          <Button
+            style={styles.buttonEditDelete}
+            status='danger'
+            accessoryRight={renderIconTrash}
+            onPress={deletePlace}>
+            Delete
+          </Button>
+        </Layout>
         <Button
-          style={styles.buttonEditDelete}
-          status='success'
-          accessoryRight={renderIconEdit}
-          onPress={editPlace}>
-          Edit
-        </Button>
-        <Button
-          style={styles.buttonEditDelete}
-          status='danger'
-          accessoryRight={renderIconTrash}
-          onPress={deletePlace}>
-          Delete
+          accessoryRight={renderIconMap}
+          onPress={openMap}>
+          Open in Map
         </Button>
       </Layout>
-      <Button
-        accessoryRight={renderIconMap}
-        onPress={openMap}>
-        Open in Map
-      </Button>
     </Layout>
   )
 };
@@ -135,6 +164,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    alignContent: 'space-between',
+  },
+  containerInfos: {
+    flex: 1,
   },
   containerAdress: {
     flex: 2,
@@ -145,12 +178,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   containerButton: {
+    flex: 1,
+    alignContent: "flex-end",
+    maxHeight: 120,
+    minHeight: 120
+  },
+  containerButtonEditDelete: {
     flex: 2,
     flexDirection: "row",
     justifyContent: "space-around"
   },
   buttonEditDelete: {
     height: 50,
+    width: "40%",
     paddingHorizontal: 40
   },
   icon: {
@@ -161,5 +201,31 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     backgroundColor: 'transparent',
     paddingRight: 30
-  }
+  },
+  title: {
+    fontSize: 20,
+    paddingVertical: 15,
+    paddingLeft: 15,
+    paddingRight: 10,
+    fontWeight: 'bold',
+  },
+  text: {
+    padding: 20,
+  },
+  layout2Container: {
+    borderRadius: 10,
+    flex: 1,
+    flexDirection: 'column',
+    marginBottom: 10,
+    minHeight: 110,
+    height: 'auto'
+  },
+  viewTitle: {
+    flex: 2,
+    flexDirection: 'row',
+    alignContent: "center",
+    borderRadius: 10,
+    maxHeight: 50,
+    minHeight: 50,
+  },
 });
