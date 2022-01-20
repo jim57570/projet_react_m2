@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout, Button, List, Divider, ListItem, Icon } from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
 import Carte from "./Carte";
-import { useRef } from "react";
 
 
 const Places = ({ navigation, placesList }) => {
@@ -17,21 +16,21 @@ const Places = ({ navigation, placesList }) => {
         setListPlaces(placesList);
     }, [placesList, isFocused]);
 
-    // Icône Zoom
-    const renderIconZoom = (props) => (
-        <Icon name='pin-outline' {...props} />
-    );
-
-    // Icône Zoom
-    const buttonZoom = (item, index) => {
+    const buttonZoom = (item) => {
         return (
 
             <Layout>
                 <Button
-                    accessoryRight={renderIconZoom} onPress={() => ZoomPosition(item.coordonnee)}>
+                    onPress={() => ZoomPosition(item.coordonnee)}
+                    style={styles.buttonZoom}>
+                    <Icon
+                        style={styles.iconShare}
+                        // fill='#3366FF'
+                        fill='#FFFFFF'
+                        name='pin'
+                    />
                 </Button>
             </Layout>
-
         );
     };
 
@@ -100,5 +99,16 @@ const styles = StyleSheet.create({
     },
     bottom: {
         height: "30%",
+    },
+    buttonZoom: {
+        borderColor: 'transparent',
+        // backgroundColor: 'transparent',
+        height: 10,
+        flex: 1,
+        justifyContent: 'center',
+        width: 15
+    },
+    iconShare: {
+        backgroundColor: '#FFFF',
     }
 });
