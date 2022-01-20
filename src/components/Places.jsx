@@ -3,6 +3,8 @@ import { Layout, Button, List, Divider, ListItem, Icon } from '@ui-kitten/compon
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faSearchPlus } from '@fortawesome/free-solid-svg-icons'
 import Carte from "./Carte";
 
 
@@ -16,21 +18,25 @@ const Places = ({ navigation, placesList }) => {
         setListPlaces(placesList);
     }, [placesList, isFocused]);
 
+    // Icon search
+    const SearchIcon = (props) => (
+        <Icon {...props} name='pin' />
+    );
+
+    // Icon Glass Cheers
+    const GlassCheersIcon = (props) => {
+        return (
+            <FontAwesomeIcon icon={faSearchPlus} style={props.style} color={props.style.tintColor} />
+        )
+    };
+
     const buttonZoom = (item) => {
         return (
-
-            <Layout>
-                <Button
-                    onPress={() => ZoomPosition(item.coordonnee)}
-                    style={styles.buttonZoom}>
-                    <Icon
-                        style={styles.iconShare}
-                        // fill='#3366FF'
-                        fill='#FFFFFF'
-                        name='pin'
-                    />
-                </Button>
-            </Layout>
+            <Button
+                onPress={() => ZoomPosition(item.coordonnee)}
+                appearance='outline'
+                accessoryLeft={GlassCheersIcon}>
+            </Button>
         );
     };
 
@@ -99,14 +105,6 @@ const styles = StyleSheet.create({
     },
     bottom: {
         height: "30%",
-    },
-    buttonZoom: {
-        borderColor: 'transparent',
-        // backgroundColor: 'transparent',
-        height: 10,
-        flex: 1,
-        justifyContent: 'center',
-        width: 15
     },
     iconShare: {
         backgroundColor: '#FFFF',
