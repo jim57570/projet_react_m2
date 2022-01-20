@@ -4,12 +4,14 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
 import Carte from "./Carte";
+import { useRef } from "react";
 
 
 const Places = ({ navigation, placesList }) => {
 
     const [listPlaces, setListPlaces] = useState(placesList);
     const isFocused = useIsFocused();
+    const mapRef = useRef(null);
 
     useEffect(() => {
         setListPlaces(placesList);
@@ -20,20 +22,16 @@ const Places = ({ navigation, placesList }) => {
         <Icon name='pin-outline' {...props} />
     );
 
-    const test = (item) => (    
-        console.log(item.coordonnee)
-    );
-
     // Icône Zoom
     const buttonZoom = (item, index) => {
         return (
-            
+
             <Layout>
                 <Button
-                    accessoryRight={renderIconZoom} onPress={() => test(item)}>                  
+                    accessoryRight={renderIconZoom} onPress={() => ZoomPosition(item.coordonnee)}>
                 </Button>
             </Layout>
-            
+
         );
     };
 
@@ -56,10 +54,15 @@ const Places = ({ navigation, placesList }) => {
         navigation.navigate("ViewPlacesDetails", { index });
     };
 
+    // Zoom sur les coordonnées renseignées
+    const ZoomPosition = (coord) => {
+        mapRef.current.animateToRegion(coord, 1000); // Zoom dure 1000 ms
+    };
+
     return (
         <Layout style={styles.container}>
             <View style={styles.carte}>
-                 <Carte localisation={placesList} style={styles.carte} /> 
+                <Carte localisation={placesList} style={styles.carte} instanceMap={mapRef} />
             </View>
 
             <View style={styles.bottom}>
@@ -68,7 +71,7 @@ const Places = ({ navigation, placesList }) => {
                 </Button>
                 <List
                     data={listPlaces}
-                    // keyExtractor={(item) => item.index.toString()}
+                    keyExtractor={(item, index) => index}
                     ItemSeparatorComponent={Divider}
                     renderItem={renderItem}
                 />
