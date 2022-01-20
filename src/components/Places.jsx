@@ -67,7 +67,7 @@ const Places = ({ navigation, placesList }) => {
     return (
         <Layout style={styles.container}>
             <View style={styles.carte}>
-                <Button appearance='ghost' style={styles.buttonAddNewPlace} onPress={navigateToAddNewPlace}>
+                <Button appearance='outline' style={styles.buttonAddNewPlace} onPress={navigateToAddNewPlace}>
                     Add New Place
                 </Button>
                 <Carte localisation={placesList} style={styles.carte} instanceMap={mapRef} />
@@ -115,5 +115,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: 2,
         marginTop: 50,
+        marginRight: 20,
+        right: "1%"
     }
 });
