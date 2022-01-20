@@ -23,10 +23,10 @@ function placesReducer(state = initialState, action) {
             return nextState || state
         //Modification d'un lieu
         case 'UPDATE_PLACE':
-            nextState = state;
-            index = nextState.places.indexOf(action.index);
+            nextState = {...state};
+            index = action.index;
             if (index != -1)
-                nextState[index] = action.value;
+                nextState.places[index] = action.value;
             return nextState || state
         //Reset de la liste
         case 'RESET_PLACE':

@@ -24,9 +24,9 @@ function tagsReducer(state = initialState, action) {
         //Modification d'un tag
         case 'UPDATE_TAG':
             nextState = state;
-            index = nextState.places.indexOf(action.index);
+            index = nextState.tags.indexOf(action.index);
             if (index != -1)
-                nextState[index] = action.value;
+                nextState.tags[index] = action.value;
             return nextState || state
         //Reset de la liste
         case 'RESET_TAG':

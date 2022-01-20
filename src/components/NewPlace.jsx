@@ -12,7 +12,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
 
     useEffect(() => {
         if(route.params?.list) {
-            console.log(route.params.list);
+            //console.log(route.params.list);
             SetTags(route.params.list);
         }
     }, [route.params?.list])
@@ -43,10 +43,10 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
         new IndexPath(1),
     ]);
     const renderIconTags = (props) => (
-        <Icon name='pin-outline' {...props} />
+        <Icon name='pricetags-outline' {...props} />
     );
     const renderIconAddress = (props) => (
-        <Icon name='pricetags-outline' {...props} />
+        <Icon name='pin-outline' {...props} />
     );
     const renderIconText = (props) => (
         <Icon name='edit-outline' {...props} />
@@ -64,6 +64,12 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
         setAddress(addressData[index].address.label);
     };
 
+    //DEBUG ONLY
+    const resetPlace = () => {
+        const action = {type: 'RESET_PLACE'};
+        dispatch(action);
+    }
+
     //affichage autocompletion adresse
     const renderAutocomplete = (item, index) => (
         <AutocompleteItem
@@ -76,7 +82,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
     const addPlace = async () => {
         //TODO verification formulaire
         //TODO verification retour API
-        /*
+        
         const res = await geocoding(address);
 
         //constitution de notre objet Lieu
@@ -89,7 +95,8 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
                 "latitudeDelta": 1,
                 "longitudeDelta": 1,
             },
-            "description": description
+            "description": description,
+            "tags": tags
         };
         const action = {type: 'ADD_PLACE', value: newPlace};
         dispatch(action); // dispatch est injectée par Redux dans les props du composant
@@ -98,8 +105,8 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
             duration: Toast.durations.LONG,
         });
 
-        //console.log(placesList);*/
-        console.log(tags);
+        //console.log(placesList);
+        //console.log(tags);
     };
 
     const renderTags = ({item, index}) => (
@@ -127,27 +134,19 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
                 onChangeText={nextDescription => setDescription(nextDescription)}
                 style={styles.input}
             />
-            {/*<Select
-                placeholder='Tags'
-                multiSelect={true}
-                selectedIndex={selectedIndex}
-                onSelect={index => setSelectedIndex(index)}
-                style={styles.input}
-                accessoryLeft={renderIconTags}>
-                <SelectItem title='Option 1' />
-                <SelectItem title='Option 2' />
-                <SelectItem title='Option 3' />
-            </Select>*/}
-            <TouchableOpacity onPress={() => {navigation.navigate("Tags", {list: [{"name": "OuI"}]})}}>
-                <Button>
-                    Ajouter des tags
-                </Button>
-                <List
+            <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags})}}>
+                <Text>
+                    Tags :
+                </Text>
+                {tags.length == 0 
+                    ?<Text>Empty (click here to add)</Text>
+                    :<List
+                    accessoryLeft={renderIconTags}
                     data={tags}
                     renderItem={renderTags}
-                />
+                    />
+                }
             </TouchableOpacity>
-
             <Autocomplete
                 placeholder='Address'
                 value={address}
@@ -160,13 +159,16 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
             <Button onPress={addPlace}>
                 Add place
             </Button>
+            <Button onPress={resetPlace}>
+                reset list places
+            </Button>
 
         </Layout>
     );
 };
 
 const mapStateToProps = (state) => {
-    console.log(state);
+    //console.log(state);
     return {
         placesList: state.places
     }
@@ -181,5 +183,8 @@ const styles = StyleSheet.create({
     },
     input: {
         paddingBottom: 10
+    },
+    tagList: {
+        flexDirection: 'row'
     }
 });
