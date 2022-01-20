@@ -123,6 +123,9 @@ function VueActivities() {
             initialRouteName="Activities"
             screenOptions={{
                 headerShown: true,
+                headerBackTitleStyle: {
+                    // backgroundColor: theme['background-basic-color-1']
+                },
                 headerStyle: {
                     backgroundColor: theme['background-basic-color-1'],
                     borderColor: theme['border-basic-color-1']
@@ -133,6 +136,7 @@ function VueActivities() {
             <VueSearchNavigation.Screen
                 name="Activities"
                 component={Activities}
+                options={{ headerShown: false }}
             />
         </VueSearchNavigation.Navigator>
     )
