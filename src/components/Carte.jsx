@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   map: {
-    width: Dimensions.get('window').width,
+    width: "100%",
     height: '100%',
   },
   fenetremap: {

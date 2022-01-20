@@ -33,10 +33,10 @@ const SearchIcon = (props) => (
     <Icon {...props} name='search-outline' />
 );
 
-// Icon search
+// Icon Glass Cheers
 const GlassCheersIcon = (props) => {
     return (
-    <FontAwesomeIcon icon={faGlassCheers} size="30" color={props.style.tintColor} />
+    <FontAwesomeIcon icon={faGlassCheers} size={30} color={props.style.tintColor} />
 )};
 
 // Affiche la Vue Places
