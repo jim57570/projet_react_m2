@@ -61,14 +61,14 @@ const Places = ({ navigation, placesList }) => {
     return (
         <Layout style={styles.container}>
             <View style={styles.carte}>
+                <Button appearance='ghost' style={styles.buttonAddNewPlace} onPress={navigateToAddNewPlace}>
+                    Add New Place
+                </Button>
                 <Carte localisation={placesList} style={styles.carte} instanceMap={mapRef} />
+
             </View>
 
             <View style={styles.bottom}>
-                <Button style={styles.space} onPress={navigateToAddNewPlace}>
-                    Add New Place
-                </Button>
-                
                 <List
                     data={listPlaces}
                     ItemSeparatorComponent={Divider}
@@ -110,5 +110,12 @@ const styles = StyleSheet.create({
     },
     iconShare: {
         backgroundColor: '#FFFF',
+    },
+    buttonAddNewPlace: {
+        flex: 1,
+        alignSelf: 'flex-end',
+        position: 'absolute',
+        zIndex: 2,
+        marginTop: 50,
     }
 });

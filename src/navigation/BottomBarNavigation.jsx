@@ -36,7 +36,7 @@ const SearchIcon = (props) => (
 // Icon search
 const GlassCheersIcon = (props) => {
     return (
-    <FontAwesomeIcon icon={faGlassCheers} size={props.style.width} color={props.style.tintColor} />
+    <FontAwesomeIcon icon={faGlassCheers} size="30" color={props.style.tintColor} />
 )};
 
 // Affiche la Vue Places
