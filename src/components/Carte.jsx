@@ -3,58 +3,50 @@ import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions, FlatList } from 'react-native';
 import * as Location from 'expo-location';
 import { Layout, Divider, List, ListItem, Button, Input, Select, SelectItem, IndexPath, Icon, Spinner } from '@ui-kitten/components';
+import { FontAwesome } from '@expo/vector-icons';
+import { useRef } from "react";
 
 
-const Carte = ({ navigation, localisation }) => {
+const Carte = ({ navigation, localisation, posit}) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [placement, setPlacement] = useState(null);
   const [loading, setLoading] = useState(false);
-  console.log(localisation);
+  const [position, setPosition] = useState(null);
+  const mapRef = useRef(null);
+  console.log(posit);
 
-  // useEffect(() => {
-  //   setLoading(true);
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== 'granted') {
-  //       setErrorMsg('Permission to access location was denied');
-
-  //       setPlacement({
-  //         latitude: 35.6762,
-  //         longitude: 139.6503,
-  //         latitudeDelta: 1,
-  //         longitudeDelta: 1,
-  //       });
-
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     let location = await Location.getCurrentPositionAsync({});
-  //     setLocation(location);
-  //   })();
-  // }, []);
-
-  // if (errorMsg)
-  // {
-
-  // }
-  // else if (location)
-  // {
-  //   setPlacement({
-  //     latitude: location && location.coords && location.coords.latitude ? location.coords.latitude : 35.6762,
-  //     longitude: location && location.coords && location.coords.longitude ? location.coords.longitude : 139.6503,
-  //     latitudeDelta: 1,
-  //     longitudeDelta: 1,
-  //   });
-  // }
-
-  const zone = {
-    latitude: 35.6762,
-    longitude: 39.6503,
-    latitudeDelta: 1,
-    longitudeDelta: 1,
+  function ZoomPosition(coord) {
+    mapRef.current.animateToRegion(coord, 3 * 1000);
   };
+
+
+  React.useEffect(() => {
+    (async () =>{
+        let { status } = await Location.requestPermissionsAsync();
+        if(status !== 'granted'){
+            setError('Permission to access location was denied');
+            return;
+        }
+        const locate = await Location.getCurrentPositionAsync({});
+        setPosition(locate.coords)
+    })()
+}, []);
+
+
+
+const tokyoRegion = {
+  latitude: 49.5,
+  longitude: 5.5,
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01,
+}; 
+
+
+
+useEffect(() => {
+
+}, []);
 
 
 
@@ -67,37 +59,37 @@ const Carte = ({ navigation, localisation }) => {
   };
 
   return (
-    <View>
-      {loading ?
-        <Spinner /> :
-        (<MapView style={styles.map}
-          initialRegion={zone}
-        >
-          <Marker coordinate={zone} />
+      <View>
+    {loading ?
+      <Spinner /> :
+      (<MapView style={styles.map} 
+        ref={mapRef}>
 
 
-          {/* {localisation.map((localisation) => (
-            <Marker
-              coordinate={localisation.coordonnee}
-              title={localisation.nom}
-              description={localisation.description}
-            />
-          ))} */}
-          { localisation ? 
-          localisation.map((marker, index) => (
-            <Marker
-              key={index}
-              coordinate={marker.coordonnee}
-              title={marker.nom}
-              description={marker.description}
-            />
-          )) : null
-        }
+        {localisation.map((localisation) => (
+          <Marker
+            coordinate={localisation.coordonnee}
+            title={localisation.nom}
+            description={localisation.description}
+          />
+        ))}
 
-        </MapView>
-        )}
+
+              {position ? (
+                    <Marker coordinate={position} title="My location" >
+                        <FontAwesome name="map-marker" size={40} color="#B12A5B" />
+                    </Marker>
+                ):
+                    <Text> pas encore</Text>
+                }  
+
+
+
+      </MapView>
+      )}
     </View>
-  )
+      
+    )
 };
 
 export default Carte;

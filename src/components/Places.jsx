@@ -3,8 +3,8 @@ import { Layout, Button, List, Divider, ListItem, Icon } from '@ui-kitten/compon
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
-
 import Carte from "./Carte";
+
 
 const Places = ({ navigation, placesList }) => {
 
@@ -20,25 +20,31 @@ const Places = ({ navigation, placesList }) => {
         <Icon name='pin-outline' {...props} />
     );
 
+    const test = (item) => (    
+        console.log(item.coordonnee)
+    );
+
     // Icône Zoom
-    const buttonZoom = (props) => {
+    const buttonZoom = (item, index) => {
         return (
+            
             <Layout>
                 <Button
-                    accessoryRight={renderIconZoom}>
+                    accessoryRight={renderIconZoom} onPress={() => test(item)}>                  
                 </Button>
             </Layout>
-
+            
         );
     };
+
 
     const renderItem = ({ item, index }) => (
         <ListItem
             title={item.loc}
             key={index}
             description={item.nom}
-            accessoryRight={buttonZoom}
-            onPress={() => navigateToLocalisationDetails(item, index)}
+            accessoryRight={buttonZoom(item, index)}
+            onPress={() => navigateToLocalisationDetails(item)}
         />
     );
 
@@ -53,7 +59,7 @@ const Places = ({ navigation, placesList }) => {
     return (
         <Layout style={styles.container}>
             <View style={styles.carte}>
-                {/* <Carte localisation={placesList} style={styles.carte} /> */}
+                 <Carte localisation={placesList} style={styles.carte} /> 
             </View>
 
             <View style={styles.bottom}>
