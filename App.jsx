@@ -15,6 +15,8 @@ import AppNavigator from './src/navigation/Navigation';
 import { Store, Persistor } from './src/store/Config';
 import { ThemeContext } from './src/store/theme-context';
 
+import "./src/translations/i18n";
+
 export default function App() {
 
   const [theme, setTheme] = React.useState('light');

@@ -18,7 +18,7 @@ import PlacesDetails from "../components/PlacesDetails"
 import EditPlace from "../components/EditPlace"
 import Tags from '../components/Tags';
 
-
+import i18next from 'i18next';
 
 
 
@@ -147,8 +147,8 @@ const BottomTabBar = ({ navigation, state }) => (
     <BottomNavigation
         selectedIndex={state.index}
         onSelect={index => navigation.navigate(state.routeNames[index])}>
-        <BottomNavigationTab title='Places' icon={PlacesIcon} style={styles.space} />
-        <BottomNavigationTab title='Search' icon={SearchIcon} style={styles.space} />
+        <BottomNavigationTab title={i18next.t('Places')} icon={PlacesIcon} style={styles.space} />
+        <BottomNavigationTab title={i18next.t('Search')} icon={SearchIcon} style={styles.space} />
         <BottomNavigationTab title='Activities' icon={GlassCheersIcon} style={styles.space} />
     </BottomNavigation>
 );
