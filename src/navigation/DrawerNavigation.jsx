@@ -63,23 +63,27 @@ const DrawerContent = ({ navigation, state }) => {
             }
             else {
                 setVisible(true);
-                if (i18next.language == 'fr')
-                    i18next.changeLanguage('en');
-                else if (i18next.language == 'en')
-                    i18next.changeLanguage('fr');
-
-                if (themeContext.theme == "dark") {
-                    setTitleTheme(i18next.t('Bright mode'));
-                }
-                else {
-                    setTitleTheme(i18next.t('Dark mode'));
-                }
             }
 
         }
         else {
             navigation.navigate(state.routeNames[index.row]);
         }
+    }
+
+    const ChangeLanguages = (language) => {
+        if (i18next.language != 'en' && language == 'en')
+            i18next.changeLanguage('en');
+        else if (i18next.language != 'fr' && language == 'fr')
+            i18next.changeLanguage('fr');
+
+        if (themeContext.theme == "dark") {
+            setTitleTheme(i18next.t('Bright mode'));
+        }
+        else {
+            setTitleTheme(i18next.t('Dark mode'));
+        }
+        setVisible(false);
     }
 
 
@@ -105,9 +109,12 @@ const DrawerContent = ({ navigation, state }) => {
                 onBackdropPress={() => setVisible(false)}>
                 <Card disabled={true}>
                     <View>
-                        <Text>Change the </Text>
-                        <Button onPress={() => setVisible(false)}>
-                            DISMISS
+                        <Text style={styles.titleLanguage}>{i18next.t('Choose the language')}</Text>
+                        <Button style={styles.inputLanguage} status='basic' onPress={() => ChangeLanguages('fr')}>
+                            {i18next.t('French')}
+                        </Button>
+                        <Button style={styles.inputLanguage} status='basic' onPress={() => ChangeLanguages('en')}>
+                            {i18next.t('English')}
                         </Button>
                     </View>
                 </Card>
@@ -164,4 +171,13 @@ const styles = StyleSheet.create({
     backdrop: {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
+    titleLanguage: {
+        fontWeight: 'bold',
+        fontSize: 30,
+        padding: 20
+    },
+    inputLanguage: {
+        margin: 10,
+        fontSize: 0,
+    }
 });
