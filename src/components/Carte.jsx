@@ -45,6 +45,7 @@ const Carte = ({ navigation, localisation, posit, instanceMap }) => {
               coordinate={place.coordonnee}
               title={place.nom}
               description={place.description}
+              key={place.id}
             />
           ))}
           

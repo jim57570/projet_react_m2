@@ -44,10 +44,10 @@ const Places = ({ navigation, placesList }) => {
     const renderItem = ({ item, index }) => (
         <ListItem
             title={item.loc}
-            key={item.name}
+            key={item.id}
             description={item.nom}
             accessoryRight={buttonZoom(item)}
-            onPress={() => navigateToLocalisationDetails(index)}
+            onPress={() => navigateToLocalisationDetails(item.id)}
         />
     );
 

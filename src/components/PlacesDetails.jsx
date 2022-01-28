@@ -9,14 +9,14 @@ import { useIsFocused } from "@react-navigation/native"; // https://stackoverflo
 const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
 
   const index = route.params.index;
-  const [place, setPlace] = useState(placesList[index]);
+  const [place, setPlace] = useState(placesList.find(place => place.id === index));
   const isFocused = useIsFocused();
   const theme = useTheme();
 
   useEffect(() => {
-    setPlace(placesList[index]);
+    setPlace(placesList.find(place => place.id === index));
     navigation.setOptions({
-      headerTitle: placesList[index]?.nom,
+      headerTitle: placesList.find(place => place.id === index)?.nom,
       headerRight: () => (
         <Button
           style={styles.buttonShare}

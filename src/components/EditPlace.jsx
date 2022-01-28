@@ -19,7 +19,7 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
     const index = route.params.index;
 
     // Place
-    const [place, setPlace] = useState(placesList[index]);
+    const [place, setPlace] = useState(placesList.find(place => place.id === index));
 
 
     useEffect(() => {

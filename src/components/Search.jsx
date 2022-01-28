@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Layout, Divider, List, ListItem, Button, Input, Select, SelectItem, IndexPath, Icon, Autocomplete, AutocompleteItem, Text } from '@ui-kitten/components';
-import { StyleSheet, View } from 'react-native';
+import { Layout, Divider, List, ListItem, Button, Input, Select, SelectItem, IndexPath, Icon, Autocomplete, AutocompleteItem} from '@ui-kitten/components';
+import { StyleSheet} from 'react-native';
 import { cityAutoComplete, geocoding } from '../api/Here';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
 
+//distance en km
 const distanceData = [
     5, 10, 20, 30, 40, 50
 ];
@@ -61,6 +62,11 @@ const Search = ({navigation, placesList, tagsList}) => {
         setCityList(res.items);
     };
 
+    //navigation vers detail
+    const navigateToLocalisationDetails = (index) => {
+        navigation.navigate("ViewPlacesDetails", { index });
+    };
+
     //affichage autocompletion city
     const renderAutocomplete = (item, index) => (
         <AutocompleteItem
@@ -75,6 +81,7 @@ const Search = ({navigation, placesList, tagsList}) => {
             title={item.loc}
             key={item.name}
             description={item.nom}
+            onPress={() => navigateToLocalisationDetails(item.id)}
         />
     );
 
