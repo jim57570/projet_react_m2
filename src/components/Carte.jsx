@@ -13,13 +13,15 @@ const Carte = ({ navigation, localisation, posit, instanceMap }) => {
 
   React.useEffect(() => {
     (async () => {
+      setPosition({coords: {latitude: 49, longitude: 6}})
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setError('Permission to access location was denied');
         return;
       }
       const locate = await Location.getCurrentPositionAsync({});
-      setPosition(locate.coords)
+      //console.log(locate);
+      setPosition(locate);
     })()
   }, []);
 
@@ -30,6 +32,13 @@ const Carte = ({ navigation, localisation, posit, instanceMap }) => {
         (<MapView style={styles.map}
           ref={mapRef}>
 
+          {position ? (
+            <Marker coordinate={position.coords} title="My location" >
+              <FontAwesome name="map-marker" size={40} color="#B12A5B" />
+            </Marker>
+          ) :
+            <Text> pas encore</Text>
+          }
 
           {localisation.map((place) => (
             <Marker
@@ -39,13 +48,7 @@ const Carte = ({ navigation, localisation, posit, instanceMap }) => {
             />
           ))}
           
-          {position ? (
-            <Marker coordinate={position} title="My location" >
-              <FontAwesome name="map-marker" size={40} color="#B12A5B" />
-            </Marker>
-          ) :
-            <Text> pas encore</Text>
-          }
+          
 
 
 

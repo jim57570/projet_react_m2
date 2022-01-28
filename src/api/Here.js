@@ -50,3 +50,20 @@ export const autoComplete= async (query) => {
         throw(error);
     }
 };
+
+//TODO: rajouter coordonnees carte ?
+//Autcompletion pour recherche ville
+export const cityAutoComplete= async (query) => {
+    try {
+        const response = await fetch('https://autocomplete.search.hereapi.com/v1/autocomplete?types=city&apiKey=' + API_KEY + '&q=' + query + '&limit=' + 5,
+        {method: 'GET',
+            headers: {
+                'Content-type': 'application/json'
+            }});
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        console.error(error);
+        throw(error);
+    }
+};
