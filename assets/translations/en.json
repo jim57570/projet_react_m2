@@ -1,5 +1,11 @@
 {
     "Places": "Places",
     "Search": "Search",
-    "Activities": "Activities"
+    "Activities": "Activities",
+    "Languages": "Languages",
+    "Bright mode": "Bright mode",
+    "Dark mode": "Dark mode",
+    "Settings": "Settings",
+    "Home": "Home",
+    "Add new place": "Add new place"
 }

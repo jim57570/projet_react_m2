@@ -6,7 +6,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSearchPlus } from '@fortawesome/free-solid-svg-icons'
 import Carte from "./Carte";
-
+import i18next from 'i18next';
 
 const Places = ({ navigation, placesList }) => {
 
@@ -68,7 +68,7 @@ const Places = ({ navigation, placesList }) => {
         <Layout style={styles.container}>
             <View style={styles.carte}>
                 <Button appearance='outline' style={styles.buttonAddNewPlace} onPress={navigateToAddNewPlace}>
-                    Add New Place
+                    {i18next.t('Add new place')}
                 </Button>
                 <Carte localisation={placesList} style={styles.carte} instanceMap={mapRef} />
 
