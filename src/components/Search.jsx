@@ -80,12 +80,12 @@ const Search = ({navigation, placesList, tagsList}) => {
 
     //affichage tag
     const renderTags = (item, index) => (
-        <SelectItem title={item.name}/>
+        <SelectItem title={item.name} key={index}/>
     );
 
     //affichage km
     const renderDist = (item, index) => (
-        <SelectItem title={item + ' km'} />
+        <SelectItem title={item + ' km'} key={index}/>
     );
 
     //recherche des lieux

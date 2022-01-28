@@ -91,7 +91,9 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
         const res = await geocoding(address);
 
         //constitution de notre objet Lieu
+        //id mis a jour ds reducer
         const newPlace = {
+            "id": 0,
             "nom": name,
             "loc": address,
             "coordonnee": {
