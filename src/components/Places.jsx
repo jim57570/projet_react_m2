@@ -5,13 +5,15 @@ import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSearchPlus } from '@fortawesome/free-solid-svg-icons'
-import * as Location from 'expo-location';
 import Carte from "./Carte";
+import * as geolib from 'geolib';
 
 
 const Places = ({ navigation, placesList }) => {
 
-    const [listPlaces, setListPlaces] = useState(placesList);
+    const [listPlacesAll, setListPlacesAll] = useState(placesList)
+
+    const [listPlaces, setListPlaces] = useState([]);
     const isFocused = useIsFocused();
     const mapRef = useRef(null);
     const [position, setPosition] = useState(null);
@@ -21,13 +23,63 @@ const Places = ({ navigation, placesList }) => {
     const [SE, setSE] = useState(null);
 
     useEffect(() => {
-        setListPlaces(placesList);
+        setListPlacesAll(placesList);
     }, [placesList, isFocused]);
 
 
+
+
     useEffect(() => {
-        console.log(NE);
+
+        setListPlaces([])
+    
+        if(SW !== null && NW !== null && NE !== null && SE !== null ){
+      
+        listPlacesAll.forEach((item, index) => {
+            /* console.log(item.coordonnee) //value 
+            console.log(index) //index */
+            
+            const resultat = geolib.isPointInPolygon({ latitude: item.coordonnee.latitude, longitude: item.coordonnee.longitude }, [
+                { lat: SW.latitude, lng: SW.longitude }, // Sud Ouest 
+                { lat: NW.latitude,  lng: NW.longitude }, // Nord ouest
+                { lat: NE.latitude, lng: NE.longitude }, // Nord est               
+                { lat: SE.latitude, lng: SE.longitude }, // sud est
+              ])
+
+              if(resultat){
+                listPlaces.push(item)
+              }
+
+         
+        })
+        console.log("___________")
+        console.log(listPlaces)
+        console.log("___________")
+
+    }
+
+       
     }, [NE, SW, NW, SE]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Icon search
     const SearchIcon = (props) => (

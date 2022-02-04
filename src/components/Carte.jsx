@@ -4,31 +4,21 @@ import { StyleSheet, Text, View, Dimensions, FlatList } from 'react-native';
 import * as Location from 'expo-location';
 import { Spinner } from '@ui-kitten/components';
 import { FontAwesome } from '@expo/vector-icons';
-import * as geolib from 'geolib';
+
 
 
 
 const Carte = ({ navigation, localisation, setPosition, position ,instanceMap, NoEs, NoWs, SoWs, SoEs }) => {
   const [loading, setLoading] = useState(false);
-/*   const [position, setPosition] = useState(null); */
-/*   const [northEast, setnorthEast] = useState(null);
-  const [southWest, setsouthWest] = useState(null);
-  const [northWest, setnorthWest] = useState(null);
-  const [southEast, setsouthEast] = useState(null); */
-/*   northEast = NoEs;
-  southWest = SoWs;
-  northWest = NoWs;
-  southEast = SoEs; */
-
-
   const mapRef = instanceMap;
   bounds = null;
+  
 
 
 
   const getBounds = (bounds) => {
 
-    nordEst = {
+     nordEst = {
       latitude: bounds.northEast.latitude,
       longitude: bounds.northEast.longitude,
       latitudeDelta: 1,
@@ -59,21 +49,11 @@ const Carte = ({ navigation, localisation, setPosition, position ,instanceMap, N
       longitudeDelta: 1,
 
     };
-
-/*     setnorthEast(nordEst)
-    setsouthWest(sudOuest)
-    setnorthWest(nordOuest)
-    setsouthEast(sudEst) */
-
-/*     northEast = nordEst;
-    southWest = sudOuest;
-    northWest = nordOuest;
-    southEast = sudEst; */
   
     NoEs(nordEst);
-    NoWs(sudOuest);
-    SoWs(nordOuest);
-    SoEs(sudEst);
+    SoWs(sudOuest);
+    NoWs(nordOuest);
+    SoEs(sudEst); 
 
 /*     const resultat = geolib.isPointInPolygon({ latitude: position.latitude, longitude: position.longitude }, [
       { lat: southWest.latitude, lng: southWest.longitude }, // Sud Ouest 
