@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Layout, Button, List, Divider, ListItem, Icon } from '@ui-kitten/components';
+import { Layout, Button, List, Divider, ListItem, Icon, Text} from '@ui-kitten/components';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { useIsFocused } from "@react-navigation/native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSearchPlus } from '@fortawesome/free-solid-svg-icons'
+import * as Location from 'expo-location';
 import Carte from "./Carte";
 
 
@@ -13,6 +14,20 @@ const Places = ({ navigation, placesList }) => {
     const [listPlaces, setListPlaces] = useState(placesList);
     const isFocused = useIsFocused();
     const mapRef = useRef(null);
+    const [position, setPosition] = useState(null);
+
+
+    React.useEffect(() => {
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            setError('Permission to access location was denied');
+            return;
+          }
+          const locate = await Location.getCurrentPositionAsync({});
+          setPosition(locate.coords)
+        })()
+      }, []);
 
     useEffect(() => {
         setListPlaces(placesList);
@@ -49,6 +64,7 @@ const Places = ({ navigation, placesList }) => {
             accessoryRight={buttonZoom(item)}
             onPress={() => navigateToLocalisationDetails(index)}
         />
+        
     );
 
     const navigateToAddNewPlace = () => {
@@ -70,7 +86,7 @@ const Places = ({ navigation, placesList }) => {
                 <Button appearance='outline' style={styles.buttonAddNewPlace} onPress={navigateToAddNewPlace}>
                     Add New Place
                 </Button>
-                <Carte localisation={placesList} style={styles.carte} instanceMap={mapRef} />
+                <Carte localisation={placesList} style={styles.carte} instanceMap={mapRef} pos_actu={position} />
 
             </View>
 
