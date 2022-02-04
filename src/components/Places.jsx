@@ -15,23 +15,19 @@ const Places = ({ navigation, placesList }) => {
     const isFocused = useIsFocused();
     const mapRef = useRef(null);
     const [position, setPosition] = useState(null);
-
-
-    React.useEffect(() => {
-        (async () => {
-          let { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
-            setError('Permission to access location was denied');
-            return;
-          }
-          const locate = await Location.getCurrentPositionAsync({});
-          setPosition(locate.coords)
-        })()
-      }, []);
+    const [NE, setNE] = useState(null);
+    const [SW, setSW] = useState(null);
+    const [NW, setNW] = useState(null);
+    const [SE, setSE] = useState(null);
 
     useEffect(() => {
         setListPlaces(placesList);
     }, [placesList, isFocused]);
+
+
+    useEffect(() => {
+        console.log(NE);
+    }, [NE, SW, NW, SE]);
 
     // Icon search
     const SearchIcon = (props) => (
@@ -80,13 +76,17 @@ const Places = ({ navigation, placesList }) => {
         mapRef.current.animateToRegion(coord, 1000); // Zoom dure 1000 ms
     };
 
+
+   
+
     return (
         <Layout style={styles.container}>
             <View style={styles.carte}>
                 <Button appearance='outline' style={styles.buttonAddNewPlace} onPress={navigateToAddNewPlace}>
                     Add New Place
+
                 </Button>
-                <Carte localisation={placesList} style={styles.carte} instanceMap={mapRef} pos_actu={position} />
+                <Carte localisation={placesList} style={styles.carte} instanceMap={mapRef} setPosition={setPosition} position={position} NoEs = {setNE} NoWs = {setNW} SoWs= {setSW} SoEs = {setSE} />
 
             </View>
 

@@ -8,13 +8,18 @@ import * as geolib from 'geolib';
 
 
 
-const Carte = ({ navigation, localisation, instanceMap, pos_actu}) => {
+const Carte = ({ navigation, localisation, setPosition, position ,instanceMap, NoEs, NoWs, SoWs, SoEs }) => {
   const [loading, setLoading] = useState(false);
-  const [position, setPosition] = useState(null);
-  const [northEast, setnorthEast] = useState(null);
+/*   const [position, setPosition] = useState(null); */
+/*   const [northEast, setnorthEast] = useState(null);
   const [southWest, setsouthWest] = useState(null);
   const [northWest, setnorthWest] = useState(null);
-  const [southEast, setsouthEast] = useState(null);
+  const [southEast, setsouthEast] = useState(null); */
+/*   northEast = NoEs;
+  southWest = SoWs;
+  northWest = NoWs;
+  southEast = SoEs; */
+
 
   const mapRef = instanceMap;
   bounds = null;
@@ -55,20 +60,29 @@ const Carte = ({ navigation, localisation, instanceMap, pos_actu}) => {
 
     };
 
-    setnorthEast(nordEst)
+/*     setnorthEast(nordEst)
     setsouthWest(sudOuest)
     setnorthWest(nordOuest)
-    setsouthEast(sudEst)
-  
+    setsouthEast(sudEst) */
 
-    const resultat = geolib.isPointInPolygon({ latitude: position.latitude, longitude: position.longitude }, [
+/*     northEast = nordEst;
+    southWest = sudOuest;
+    northWest = nordOuest;
+    southEast = sudEst; */
+  
+    NoEs(nordEst);
+    NoWs(sudOuest);
+    SoWs(nordOuest);
+    SoEs(sudEst);
+
+/*     const resultat = geolib.isPointInPolygon({ latitude: position.latitude, longitude: position.longitude }, [
       { lat: southWest.latitude, lng: southWest.longitude }, // Sud Ouest 
       { lat: northWest.latitude,  lng: northWest.longitude }, // Nord ouest
       { lat: northEast.latitude, lng: northEast.longitude }, // Nord est               
       { lat: southEast.latitude, lng: southEast.longitude }, // sud est
-    ])
+    ]) */
 
-    console.log(resultat)
+    /* console.log(resultat) */
   
 };
 
