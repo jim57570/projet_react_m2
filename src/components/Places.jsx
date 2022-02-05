@@ -28,13 +28,14 @@ const Places = ({ navigation, placesList }) => {
 
 
 
-
     useEffect(() => {
 
         setListPlaces([])
     
         if(SW !== null && NW !== null && NE !== null && SE !== null ){
-      
+            
+        let temp = [];
+
         listPlacesAll.forEach((item, index) => {
             /* console.log(item.coordonnee) //value 
             console.log(index) //index */
@@ -47,15 +48,13 @@ const Places = ({ navigation, placesList }) => {
               ])
 
               if(resultat){
-                listPlaces.push(item)
+                temp.push(item)
               }
 
          
         })
-        console.log("___________")
-        console.log(listPlaces)
-        console.log("___________")
 
+        setListPlaces(temp)
     }
 
        
@@ -111,6 +110,7 @@ const Places = ({ navigation, placesList }) => {
             description={item.nom}
             accessoryRight={buttonZoom(item)}
             onPress={() => navigateToLocalisationDetails(index)}
+            
         />
         
     );
@@ -147,6 +147,7 @@ const Places = ({ navigation, placesList }) => {
                     data={listPlaces}
                     ItemSeparatorComponent={Divider}
                     renderItem={renderItem}
+                    extraData={listPlaces}
                 />
             </View>
         </Layout>
