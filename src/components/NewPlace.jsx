@@ -7,8 +7,15 @@ import { connect } from 'react-redux';
 import { autoComplete, geocoding } from '../api/Here';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const NewPlace = ({ placesList, dispatch, navigation, route }) => {
 
+const NewPlace = ({ placesList, dispatch, navigation, route }) => {
+    
+    //style du formulaire
+    const [nameInput, setNameInput] = useState('basic');
+    const [descInput, setDescInput] = useState('basic');
+    const [addrInput, setAddrInput] = useState('basic');
+    
+    //liste des tags de la page Tags
     useEffect(() => {
         if(route.params?.list) {
             //console.log(route.params.list);
@@ -36,11 +43,78 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
         setAddressData(res.items);
     };
 
+    //lors d'une saisie sur le champ adresse
+    const onChangeText = (query) => {
+        setAddress(query);
+        setAddrInput('basic');  //mis a jour style formulaire
+        if(address != '')
+            fetchAddress();
+    };
 
-    const [selectedIndex, setSelectedIndex] = React.useState([
-        new IndexPath(0),
-        new IndexPath(1),
-    ]);
+    //choix autocompletion sur le champ adresse
+    const onSelect = (index) => {
+        setAddress(addressData[index].address.label);
+    };
+
+    //DEBUG ONLY
+    const resetPlace = () => {
+        const action = {type: 'RESET_PLACE'};
+        dispatch(action);
+    } 
+
+    //verification du formulaire
+    const verifForm = () => {
+        let valid = true;
+
+        if(name.trim().length == 0) {
+            setNameInput('danger');
+            valid = false;
+        }
+        if(address.trim().length == 0) {
+            setAddrInput('danger');
+            valid = false;
+        }
+        return valid;
+    };
+    
+    //enregistrement d'un lieu
+    const addPlace = async () => {
+        //TODO verification retour API
+
+        if(verifForm()) {
+            const res = await geocoding(address);
+    
+            //constitution de notre objet Lieu
+            //id mis a jour ds reducer
+            const newPlace = {
+                "id": 0,
+                "nom": name,
+                "loc": address,
+                "coordonnee": {
+                    "latitude": res.items[0].position.lat,
+                    "longitude": res.items[0].position.lng,
+                    "latitudeDelta": 1,
+                    "longitudeDelta": 1,
+                },
+                "description": description,
+                "tags": tags
+            };
+            const action = {type: 'ADD_PLACE', value: newPlace};
+            dispatch(action);
+    
+            Toast.show('Place saved !', {
+                duration: Toast.durations.LONG,
+            });
+    
+            navigation.navigate("Places");
+        }
+        else {
+            Toast.show('Form incomplete !', {
+                duration: Toast.durations.SHORT,
+            });
+        }
+        
+    };
 
     // Icône Tags
     const renderIconTags = (props) => (
@@ -57,24 +131,6 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
         <Icon name='edit-outline' {...props} />
     );
 
-    //lors d'une saisie sur le champ adresse
-    const onChangeText = (query) => {
-        setAddress(query);
-        if(address != '')
-            fetchAddress();
-    };
-
-    //choix autocompletion sur le champ adresse
-    const onSelect = (index) => {
-        setAddress(addressData[index].address.label);
-    };
-
-    //DEBUG ONLY
-    const resetPlace = () => {
-        const action = {type: 'RESET_PLACE'};
-        dispatch(action);
-    }
-
     //affichage autocompletion adresse
     const renderAutocomplete = (item, index) => (
         <AutocompleteItem
@@ -82,39 +138,8 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
             title={item.address.label}
         />
     );
-    
-    //enregistrement d'un lieu
-    const addPlace = async () => {
-        //TODO verification formulaire
-        //TODO verification retour API
-        
-        const res = await geocoding(address);
 
-        //constitution de notre objet Lieu
-        //id mis a jour ds reducer
-        const newPlace = {
-            "id": 0,
-            "nom": name,
-            "loc": address,
-            "coordonnee": {
-                "latitude": res.items[0].position.lat,
-                "longitude": res.items[0].position.lng,
-                "latitudeDelta": 1,
-                "longitudeDelta": 1,
-            },
-            "description": description,
-            "tags": tags
-        };
-        const action = {type: 'ADD_PLACE', value: newPlace};
-        dispatch(action);
-
-        let toast = Toast.show('Place saved !', {
-            duration: Toast.durations.LONG,
-        });
-
-        navigation.navigate("Places");
-    };
-
+    //affichage des tags
     const renderTags = ({item, index}) => (
         <ListItem
             key={index}
@@ -125,11 +150,12 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
     return (
         <Layout style={styles.container}>
             <Input
-                placeholder='Name'
+                placeholder='Name *'
                 accessoryLeft={renderIconText}
                 value={name}
-                onChangeText={nextName => setName(nextName)}
+                onChangeText={nextName => {setName(nextName); setNameInput('basic')}}
                 style={styles.input}
+                status={nameInput}
             />
             <Input
                 multiline={true}
@@ -139,6 +165,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
                 value={description}
                 onChangeText={nextDescription => setDescription(nextDescription)}
                 style={styles.input}
+                status={descInput}
             />
             <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags})}}>
                 <Text>
@@ -154,12 +181,13 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
                 }
             </TouchableOpacity>
             <Autocomplete
-                placeholder='Address'
+                placeholder='Address *'
                 value={address}
                 onSelect={onSelect}
                 onChangeText={onChangeText}
                 accessoryLeft={renderIconAddress}
-                style={styles.input}>
+                style={styles.input}
+                status={addrInput}>
                 {addressData.map(renderAutocomplete)}
             </Autocomplete>
             <Button onPress={addPlace}>
