@@ -6,10 +6,69 @@ import { Spinner } from '@ui-kitten/components';
 import { FontAwesome } from '@expo/vector-icons';
 
 
-const Carte = ({ navigation, localisation, posit, instanceMap }) => {
+
+
+const Carte = ({ navigation, localisation, setPosition, position ,instanceMap, NoEs, NoWs, SoWs, SoEs }) => {
   const [loading, setLoading] = useState(false);
-  const [position, setPosition] = useState(null);
   const mapRef = instanceMap;
+  bounds = null;
+  
+
+
+
+  const getBounds = (bounds) => {
+
+     nordEst = {
+      latitude: bounds.northEast.latitude,
+      longitude: bounds.northEast.longitude,
+      latitudeDelta: 1,
+      longitudeDelta: 1,
+
+    };
+
+    sudOuest = {
+      latitude: bounds.southWest.latitude,
+      longitude: bounds.southWest.longitude,
+      latitudeDelta: 1,
+      longitudeDelta: 1,
+
+    };
+
+    nordOuest = {
+      latitude: bounds.southWest.latitude,
+      longitude: bounds.northEast.longitude,
+      latitudeDelta: 1,
+      longitudeDelta: 1,
+
+    };
+
+    sudEst = {
+      latitude: bounds.northEast.latitude,
+      longitude: bounds.southWest.longitude,
+      latitudeDelta: 1,
+      longitudeDelta: 1,
+
+    };
+  
+    NoEs(nordEst);
+    SoWs(sudOuest);
+    NoWs(nordOuest);
+    SoEs(sudEst); 
+
+/*     const resultat = geolib.isPointInPolygon({ latitude: position.latitude, longitude: position.longitude }, [
+      { lat: southWest.latitude, lng: southWest.longitude }, // Sud Ouest 
+      { lat: northWest.latitude,  lng: northWest.longitude }, // Nord ouest
+      { lat: northEast.latitude, lng: northEast.longitude }, // Nord est               
+      { lat: southEast.latitude, lng: southEast.longitude }, // sud est
+    ]) */
+
+    /* console.log(resultat) */
+  
+};
+
+
+
+
 
   React.useEffect(() => {
     (async () => {
@@ -30,7 +89,15 @@ const Carte = ({ navigation, localisation, posit, instanceMap }) => {
       {loading ?
         <Spinner /> :
         (<MapView style={styles.map}
-          ref={mapRef}>
+          ref={mapRef}
+          onRegionChange={
+            async () => {
+              bounds = null;
+              bounds = await mapRef.current.getMapBoundaries();   
+              if(bounds != null){getBounds(bounds)} 
+             }          
+          }
+         >
 
           {position ? (
             <Marker coordinate={position.coords} title="My location" >
@@ -40,14 +107,17 @@ const Carte = ({ navigation, localisation, posit, instanceMap }) => {
             <Text> pas encore</Text>
           }
 
+          
           {localisation.map((place) => (
             <Marker
+              key={place.nom}
               coordinate={place.coordonnee}
               title={place.nom}
               description={place.description}
               key={place.id}
             />
           ))}
+
           
           
 
