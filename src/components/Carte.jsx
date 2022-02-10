@@ -98,7 +98,7 @@ const Carte = ({ navigation, localisation, setPosition, position ,instanceMap, N
          >
 
 
-
+          
           {localisation.map((place) => (
             <Marker
               key={place.nom}
@@ -107,6 +107,7 @@ const Carte = ({ navigation, localisation, setPosition, position ,instanceMap, N
               description={place.description}
             />
           ))}
+
           
           {position ? (
             <Marker coordinate={position} title="My location" >
