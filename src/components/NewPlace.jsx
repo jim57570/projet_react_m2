@@ -167,19 +167,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
                 style={styles.input}
                 status={descInput}
             />
-            <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags})}}>
-                <Text>
-                    Tags :
-                </Text>
-                {tags.length == 0 
-                    ?<Text>Empty (click here to add)</Text>
-                    :<List
-                    accessoryLeft={renderIconTags}
-                    data={tags}
-                    renderItem={renderTags}
-                    />
-                }
-            </TouchableOpacity>
+
             <Autocomplete
                 placeholder='Address *'
                 value={address}
@@ -190,6 +178,23 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
                 status={addrInput}>
                 {addressData.map(renderAutocomplete)}
             </Autocomplete>
+
+            <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags})}}>
+                <Button status="basic">
+                    Tags : {tags.length == 0
+                    ?<Text style={styles.text}>Empty (click here to add)</Text>
+                    :null
+                }
+                </Button>
+                {tags.length == 0
+                    ? null
+                    :<List
+                        accessoryLeft={renderIconTags}
+                        data={tags}
+                        renderItem={renderTags}
+                    />
+                }
+            </TouchableOpacity>
             <Button onPress={addPlace}>
                 Add place
             </Button>
@@ -218,6 +223,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10
     },
     tagList: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        paddingBottom: 10
     }
 });
