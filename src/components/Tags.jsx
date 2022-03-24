@@ -29,7 +29,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
 
     
     const back = () => {
-        navigation.navigate("Add New Place", {list: list});
+        navigation.navigate(route.params.path, {list: list});
     }
     
     //mis a jour de l'autocomplete

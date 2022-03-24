@@ -179,7 +179,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
                 {addressData.map(renderAutocomplete)}
             </Autocomplete>
 
-            <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags})}}>
+            <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags, path: "Add New Place"})}}>
                 <Button status="basic">
                     Tags : {tags.length == 0
                     ?<Text style={styles.text}>Empty (click here to add)</Text>

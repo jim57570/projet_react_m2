@@ -29,7 +29,6 @@ const Places = ({ navigation, placesList }) => {
 
 
     useEffect(() => {
-
         setListPlaces([])
     
         if(SW !== null && NW !== null && NE !== null && SE !== null ){

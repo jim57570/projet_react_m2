@@ -5,6 +5,7 @@ const initialState = { places: [], id: 0}
 function placesReducer(state = initialState, action) {
     let nextState;
     let index;
+    let id;
     switch (action.type) {
         //Ajout d'un lieu
         case 'ADD_PLACE':
@@ -21,15 +22,18 @@ function placesReducer(state = initialState, action) {
         //Suppression d'un lieu
         case 'DELETE_PLACE':
             nextState = {...state};
-            index = nextState.places.findIndex(element => element == action.value);
+            index = nextState.places.findIndex(element => element.id == action.value);
             if (index != -1) {
                 nextState.places.splice(index, 1);
             }
             return nextState || state
         //Modification d'un lieu
         case 'UPDATE_PLACE':
+            console.log("action.value");
+            console.log(action.value);
             nextState = {...state};
-            index = action.value.index;
+            id = action.value.id;
+            index = nextState.places.findIndex(element => element.id == action.value.place.id);
             if (index != -1) {
                 nextState.places[index] = action.value.place;
             }
