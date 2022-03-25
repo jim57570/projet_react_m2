@@ -77,7 +77,7 @@ const Search = ({navigation, placesList, tagsList}) => {
         //TODO verification retour API
 
         if(verifForm()) {
-            /*const res = await geocoding(city);
+            const res = await geocoding(city);
     
             let filter = [];
             
@@ -92,7 +92,7 @@ const Search = ({navigation, placesList, tagsList}) => {
             if(tagValues.length > 0)
                 filter = filter.filter(place => place.tags.some(tag => tagValues.includes(tag.name)));
     
-            setSearchList(filter);*/
+            setSearchList(filter);
         }
         else {
             Toast.show('Form incomplete !', {

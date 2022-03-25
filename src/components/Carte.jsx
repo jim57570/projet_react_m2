@@ -110,7 +110,6 @@ const Carte = ({ navigation, localisation, setPosition, position ,instanceMap, N
           
           {localisation.map((place) => (
             <Marker
-              key={place.nom}
               coordinate={place.coordonnee}
               title={place.nom}
               description={place.description}

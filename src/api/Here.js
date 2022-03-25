@@ -67,3 +67,20 @@ export const cityAutoComplete= async (query) => {
         throw(error);
     }
 };
+
+//TODO: rajouter coordonnees carte ?
+//Permet de chercher des activites autour d un point
+export const browse = async (idCategorie, lat, lon) => {
+    try {
+        const response = await fetch('https://browse.search.hereapi.com/v1/browse?apiKey=' + API_KEY + "&at=" + lat + ',' + lon + "&categories=" + idCategorie + "&limit=20",
+        {method: 'GET',
+            headers: {
+                'Content-type': 'application/json'
+            }});
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        console.error(error);
+        throw(error);
+    }
+};
