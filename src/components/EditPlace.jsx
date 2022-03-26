@@ -14,7 +14,7 @@ import {
 import { StyleSheet } from 'react-native';
 
 import { connect } from 'react-redux';
-import { autoComplete, geocoding } from '../api/Here';
+import { autoComplete, autoCompleteLoc, geocoding } from '../api/Here';
 import {TouchableOpacity} from "react-native-gesture-handler";
 
 const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, dispatch }) => {
@@ -36,6 +36,9 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
 
     // Index de la place
     const [index, setIndex] = useState(route.params.index);
+
+    //localisation pour autocomplete address
+    const position = route.params?.loc;
 
     // Place
     const [place, setPlace] = useState(placesList.find(place => place.id === index));
@@ -61,7 +64,11 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
     // Appel api pour avoir liste autocompletion adresse
     const fetchAddress = async () => {
         setAddressData([]);
-        const res = await autoComplete(address);
+        let res = [];
+        if(position == null)
+            res = await autoComplete(address);
+        else
+            res = await autoCompleteLoc(address, position.coords.latitude, position.coords.longitude);
         setAddressData(res.items);
     };
 
@@ -181,7 +188,7 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
                 onSelect={onSelect}
                 onChangeText={onChangeText}
                 accessoryLeft={renderIconAddress}
-                style={styles.input}>
+                style={styles.input}
                 status={addrInput}>
                 {addressData.map(renderAutocomplete)}
             </Autocomplete>

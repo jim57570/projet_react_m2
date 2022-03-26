@@ -9,6 +9,7 @@ import { useIsFocused } from "@react-navigation/native"; // https://stackoverflo
 const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
 
   const index = route.params.index;
+  const position = route.params?.loc;
   const [place, setPlace] = useState(placesList.find(place => place.id === index));
   const isFocused = useIsFocused();
   const theme = useTheme();
@@ -82,7 +83,7 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
 
   // modifications d'un lieu
   const editPlace = () => {
-    navigation.navigate("Edit Place", { index });
+    navigation.navigate("Edit Place", { index , loc: position});
   };
 
   //affichage des tags

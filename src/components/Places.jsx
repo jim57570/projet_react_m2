@@ -114,11 +114,11 @@ const Places = ({ navigation, placesList }) => {
     );
 
     const navigateToAddNewPlace = () => {
-        navigation.navigate("Add New Place");
+        navigation.navigate("Add New Place", {loc: position});
     };
 
     const navigateToLocalisationDetails = (index) => {
-        navigation.navigate("ViewPlacesDetails", { index });
+        navigation.navigate("ViewPlacesDetails", { index , loc: position});
     };
 
     // Zoom sur les coordonnées renseignées

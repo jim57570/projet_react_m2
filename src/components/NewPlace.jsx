@@ -4,7 +4,7 @@ import { StyleSheet, View} from 'react-native';
 import Toast from 'react-native-root-toast';
 
 import { connect } from 'react-redux';
-import { autoComplete, geocoding } from '../api/Here';
+import { autoComplete, autoCompleteLoc, geocoding } from '../api/Here';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
@@ -16,11 +16,10 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
     const [addrInput, setAddrInput] = useState('basic');
     
     //liste des tags de la page Tags
+    //localisation de la page Places
     useEffect(() => {
-        if(route.params?.list) {
-            //console.log(route.params.list);
+        if(route.params?.list) 
             SetTags(route.params.list);
-        }
     }, [route.params?.list])
     
     //state pour le formulaire
@@ -28,10 +27,11 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
     const [description, setDescription] = useState('');
     const [address, setAddress] = useState('');
 
-    const oui = true;
 
     //liste des tags selectionnes
     const [tags, SetTags] = useState([]);
+
+    const [position, setPosition] = useState(route.params?.loc);
 
     //liste d'adresses pour l'autocompletion
     const [addressData, setAddressData] = useState([]);
@@ -39,12 +39,17 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
     //appel api pour avoir liste autocompletion adresse
     const fetchAddress = async () => {
         setAddressData([]);
-        const res = await autoComplete(address);
+        let res = [];
+        if(position == null)
+            res = await autoComplete(address);
+        else
+            res = await autoCompleteLoc(address, position.coords.latitude, position.coords.longitude);
         setAddressData(res.items);
     };
 
     //lors d'une saisie sur le champ adresse
     const onChangeText = (query) => {
+        console.log(position);
         setAddress(query);
         setAddrInput('basic');  //mis a jour style formulaire
         if(address != '')
