@@ -61,22 +61,33 @@ const Search = ({navigation, placesList, tagsList}) => {
     }; 
     
     //verification formulaire
-    const verifForm = () => {
+    const verifForm = async () => {
         let valid = true;
+
+        const res = await geocoding(city); //on verifie si la ville existe bien
 
         if(city.trim().length == 0) {
             setCityinput('danger');
             valid = false;
+            Toast.show('Form incomplete !', {
+                duration: Toast.durations.SHORT,
+            });
+        }
+        else if(res.items.length == 0) {
+            setCityinput('danger');
+            valid = false;
+            Toast.show('City doesnt exist!', {
+                duration: Toast.durations.SHORT,
+            });
         }
         return valid;
     };
 
     //recherche des lieux
     const btnSearch = async () => {
-        //TODO verification formulaire
-        //TODO verification retour API
+        const check = await verifForm();
 
-        if(verifForm()) {
+        if(check) {
             const res = await geocoding(city);
     
             let filter = [];
@@ -94,12 +105,6 @@ const Search = ({navigation, placesList, tagsList}) => {
     
             setSearchList(filter);
         }
-        else {
-            Toast.show('Form incomplete !', {
-                duration: Toast.durations.SHORT,
-            });
-        }
-        
     };
 
     //Calcule la distance entre 2 coord GPS

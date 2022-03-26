@@ -16,6 +16,8 @@ import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { autoComplete, autoCompleteLoc, geocoding } from '../api/Here';
 import {TouchableOpacity} from "react-native-gesture-handler";
+import Toast from 'react-native-root-toast';
+
 
 const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, dispatch }) => {
 
@@ -113,23 +115,40 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
     );
 
     //verification du formulaire
-    const verifForm = () => {
+    const verifForm = async () => {
         let valid = true;
+
+        const res = await geocoding(address); //on verifie si l adresse existe bien
 
         if(name.trim().length == 0) {
             setNameInput('danger');
             valid = false;
+            Toast.show('Form incomplete !', {
+                duration: Toast.durations.SHORT,
+            });
         }
         if(address.trim().length == 0) {
             setAddrInput('danger');
             valid = false;
+            Toast.show('Form incomplete !', {
+                duration: Toast.durations.SHORT,
+            });
+        }
+        else if(res.items.length == 0) {
+            setAddrInput('danger');
+            valid = false;
+            Toast.show('Address doesnt exist !', {
+                duration: Toast.durations.SHORT,
+            });
         }
         return valid;
     };
 
     // Modifications d'un lieu
     const editPlace = async () => {
-        if(verifForm()) {
+        const check = await verifForm();
+        
+        if(check) {
             const res = await geocoding(address);
             //TODO verification formulaire
 

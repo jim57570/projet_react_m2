@@ -68,25 +68,40 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
     } 
 
     //verification du formulaire
-    const verifForm = () => {
+    const verifForm = async () => {
         let valid = true;
+
+        const res = await geocoding(address); //on verifie si l adresse existe bien
 
         if(name.trim().length == 0) {
             setNameInput('danger');
             valid = false;
+            Toast.show('Form incomplete !', {
+                duration: Toast.durations.SHORT,
+            });
         }
         if(address.trim().length == 0) {
             setAddrInput('danger');
             valid = false;
+            Toast.show('Form incomplete !', {
+                duration: Toast.durations.SHORT,
+            });
+        }
+        else if(res.items.length == 0) {
+            setAddrInput('danger');
+            valid = false;
+            Toast.show('Address doesnt exist !', {
+                duration: Toast.durations.SHORT,
+            });
         }
         return valid;
     };
     
     //enregistrement d'un lieu
     const addPlace = async () => {
-        //TODO verification retour API
+        const check = await verifForm();
 
-        if(verifForm()) {
+        if(check) {
             const res = await geocoding(address);
     
             //constitution de notre objet Lieu
@@ -112,13 +127,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
             });
     
             navigation.navigate("Places");
-        }
-        else {
-            Toast.show('Form incomplete !', {
-                duration: Toast.durations.SHORT,
-            });
-        }
-        
+        }       
     };
 
     // Icône Tags
