@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Layout, Button, List, Divider, ListItem, Icon, Select, IndexPath, SelectItem } from '@ui-kitten/components';
-import { StyleSheet, View, Text, Dimensions, FlatList} from 'react-native';
+import { Layout, Button, List, Divider, ListItem, Icon, Select, IndexPath, SelectItem, Text } from '@ui-kitten/components';
+import { StyleSheet, Dimensions, FlatList, View} from 'react-native';
 import { connect } from 'react-redux';
 import MapView, { Marker } from 'react-native-maps';
 import Carte from "./Carte";
@@ -123,24 +123,27 @@ const Activities = ({ navigation, placesList}) => {
             </View>
 
             <View style={styles.bottom}>
-                <Text>Places type:</Text>
                 <View style={styles.info}>
-                    <Select
-                        style={styles.select}
-                        selectedIndex={selectedLoc}
-                        onSelect={index => setSelectedLoc(index)}
-                        value={localisation[selectedLoc.row]?.nom}
-                        >
-                        {localisation.map(renderLoc)}
-                    </Select>
-                    <Select
-                        style={styles.select}
-                        selectedIndex={selectedCategory}
-                        onSelect={index => setSelectedCategory(index)}
-                        value={HereCategories[selectedCategory.row].name_en}
-                        >
-                        {HereCategories.map(renderCategory)}
-                    </Select>
+                    <View style={styles.select}>
+                        <Text style={styles.label} category='h5'>Choix du lieu :</Text>
+                        <Select
+                            selectedIndex={selectedLoc}
+                            onSelect={index => setSelectedLoc(index)}
+                            value={localisation[selectedLoc.row]?.nom}
+                            >
+                            {localisation.map(renderLoc)}
+                        </Select>
+                    </View>
+                    <View style={styles.select}>
+                        <Text style={styles.label} category='h5'>Catégorie :</Text>
+                        <Select
+                            selectedIndex={selectedCategory}
+                            onSelect={index => setSelectedCategory(index)}
+                            value={HereCategories[selectedCategory.row].name_en}
+                            >
+                            {HereCategories.map(renderCategory)}
+                        </Select>
+                    </View>
                 </View>
                 <Button onPress={btnSearch}>
                     Search
@@ -186,5 +189,8 @@ const styles = StyleSheet.create({
     },
     select: {
         flex: 1
+    },
+    label: {
+        textAlign: 'center'
     }
 });
