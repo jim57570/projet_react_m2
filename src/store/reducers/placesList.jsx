@@ -1,14 +1,18 @@
-const initialState = { places: [] }
+const initialState = { places: [], id: 0}
 
 
 //Reducer pour gerer la liste des places
 function placesReducer(state = initialState, action) {
     let nextState;
     let index;
+    let id;
     switch (action.type) {
         //Ajout d'un lieu
         case 'ADD_PLACE':
-            console.log("ADD PLACE");
+            //auto increment
+            action.value.id = state.id;
+            state.id++;
+
             nextState = {
                 ...state,
                 places: [...state.places, action.value]
@@ -18,24 +22,21 @@ function placesReducer(state = initialState, action) {
         //Suppression d'un lieu
         case 'DELETE_PLACE':
             nextState = {...state};
-            index = nextState.places.findIndex(element => element == action.value);
+            index = nextState.places.findIndex(element => element.id == action.value);
             if (index != -1) {
                 nextState.places.splice(index, 1);
             }
             return nextState || state
         //Modification d'un lieu
         case 'UPDATE_PLACE':
+            console.log("action.value");
+            console.log(action.value);
             nextState = {...state};
-            // console.log("index envoye: " + action.value.index);
-            index = action.value.index;
-            // console.log("index: " + index);
-            // console.log("Place:\n");
-            // console.log(action.value.place);
+            id = action.value.id;
+            index = nextState.places.findIndex(element => element.id == action.value.place.id);
             if (index != -1) {
                 nextState.places[index] = action.value.place;
             }
-            // console.log("Nextstate:\n");
-            // console.log(nextState);
             return nextState
         //Reset de la liste
         case 'RESET_PLACE':

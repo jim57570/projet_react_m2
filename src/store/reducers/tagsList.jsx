@@ -1,10 +1,10 @@
 const initialState = { tags: [
     {
-        nom: "Restaurant",
+        name: "Restaurant",
         icon: '🍴',
     },
     {
-        nom: "Bar",
+        name: "Bar",
         icon: '🍺'
     },
 ] }

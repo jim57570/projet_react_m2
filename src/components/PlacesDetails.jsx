@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, Text, Button, Icon, Divider, useTheme } from '@ui-kitten/components';
+import {Layout, Text, Button, Icon, Divider, useTheme, List, ListItem} from '@ui-kitten/components';
 import { StyleSheet, Share, Linking, View } from 'react-native';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -9,14 +9,18 @@ import { useIsFocused } from "@react-navigation/native"; // https://stackoverflo
 const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
 
   const index = route.params.index;
-  const [place, setPlace] = useState(placesList[index]);
+  const position = route.params?.loc;
+  const [place, setPlace] = useState(placesList.find(place => place.id === index));
   const isFocused = useIsFocused();
   const theme = useTheme();
 
+  const [tags, SetTags] = useState([]);
+
   useEffect(() => {
-    setPlace(placesList[index]);
+    SetTags(placesList.find(place => place.id === index)?.tags);
+    setPlace(placesList.find(place => place.id === index));
     navigation.setOptions({
-      headerTitle: placesList[index]?.nom,
+      headerTitle: placesList.find(place => place.id === index)?.nom,
       headerRight: () => (
         <Button
           style={styles.buttonShare}
@@ -72,16 +76,28 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
 
   // suppression d'un lieu
   const deletePlace = async () => {
-    const action = { type: 'DELETE_PLACE', value: place };
+    const action = { type: 'DELETE_PLACE', value: place.id };
     dispatch(action);
     navigation.navigate("Places");
   };
 
   // modifications d'un lieu
   const editPlace = () => {
-    navigation.navigate("Edit Place", { index });
+    navigation.navigate("Edit Place", { index , loc: position});
   };
 
+  //affichage des tags
+  const renderTags = ({item, index}) => (
+      <ListItem
+          key={index}
+          title={item.name}
+      />
+  );
+
+  // Icône Tags
+  const renderIconTags = (props) => (
+      <Icon name='pin-outline' {...props} />
+  );
 
   return (
     <Layout style={styles.container}>
@@ -107,9 +123,14 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
             <FontAwesomeIcon icon={faTags} size={20} color={theme['text-basic-color']} paddingVertical={25} />
           </Layout>
           <Divider />
-          <Text style={styles.text}>
-            AFFICHER LES TAGS (en cliquant dessus, recherche de tous les lieux avec un tag identique ?)
-          </Text>
+          {tags?.length == 0
+              ? <Text style={styles.text}>Empty</Text>
+              :<List
+                  accessoryLeft={renderIconTags}
+                  data={tags}
+                  renderItem={renderTags}
+              />
+          }
         </Layout>
 
         <Layout style={styles.layout2Container} level='2'>
