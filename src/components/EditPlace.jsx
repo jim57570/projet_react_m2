@@ -17,6 +17,8 @@ import { connect } from 'react-redux';
 import { autoComplete, autoCompleteLoc, geocoding } from '../api/Here';
 import {TouchableOpacity} from "react-native-gesture-handler";
 import Toast from 'react-native-root-toast';
+import i18next from 'i18next';
+
 
 
 const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, dispatch }) => {
@@ -52,7 +54,7 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
         setAddress(place.loc);
         SetTags(place.tags)
         navigation.setOptions({
-            headerTitle: "Edit \"" + place.nom + "\"",
+            headerTitle: i18next.t('Edit') + " \"" + place.nom + "\"",
         });
     }, []);
 
@@ -184,7 +186,7 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
     return (
         <Layout style={styles.container}>
             <Input
-                placeholder='Name'
+                placeholder={i18next.t('Name')}
                 accessoryLeft={renderIconText}
                 value={name}
                 onChangeText={nextName => setName(nextName)}
@@ -194,7 +196,7 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
             <Input
                 multiline={true}
                 textStyle={{ minHeight: 64 }}
-                placeholder='Description'
+                placeholder={i18next.t('Description')}
                 accessoryLeft={renderIconText}
                 value={description}
                 onChangeText={nextDescription => setDescription(nextDescription)}
@@ -202,7 +204,7 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
                 status={descInput}
             />
             <Autocomplete
-                placeholder='Address'
+                placeholder={i18next.t('Address form')}
                 value={address}
                 onSelect={onSelect}
                 onChangeText={onChangeText}
@@ -214,7 +216,7 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
             <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags, path: "Edit Place"})}}>
                 <Button status="basic">
                     Tags : {tags.length == 0
-                    ?<Text style={styles.text}>Empty (click here to add)</Text>
+                    ?<Text style={styles.text}>{i18next.t('TagEmpty')}</Text>
                     :null
                 }
                 </Button>
@@ -227,10 +229,9 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
                     />
                 }
             </TouchableOpacity>
-            <Button
-                title='Add place'
-                onPress={editPlace}
-            />
+            <Button onPress={editPlace}>
+                {i18next.t('Edit')}
+            </Button>
 
         </Layout>
     );

@@ -6,6 +6,7 @@ import Toast from 'react-native-root-toast';
 import { connect } from 'react-redux';
 import { autoComplete, autoCompleteLoc, geocoding } from '../api/Here';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import i18next from 'i18next';
 
 
 const NewPlace = ({ placesList, dispatch, navigation, route }) => {
@@ -76,21 +77,21 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
         if(name.trim().length == 0) {
             setNameInput('danger');
             valid = false;
-            Toast.show('Form incomplete !', {
+            Toast.show(i18next.t('Toast form incomplete'), {
                 duration: Toast.durations.SHORT,
             });
         }
         if(address.trim().length == 0) {
             setAddrInput('danger');
             valid = false;
-            Toast.show('Form incomplete !', {
+            Toast.show(i18next.t('Toast form incomplete'), {
                 duration: Toast.durations.SHORT,
             });
         }
         else if(res.items.length == 0) {
             setAddrInput('danger');
             valid = false;
-            Toast.show('Address doesnt exist !', {
+            Toast.show(i18next.t('Toast address not correct'), {
                 duration: Toast.durations.SHORT,
             });
         }
@@ -164,7 +165,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
     return (
         <Layout style={styles.container}>
             <Input
-                placeholder='Name *'
+                placeholder={i18next.t('Name')}
                 accessoryLeft={renderIconText}
                 value={name}
                 onChangeText={nextName => {setName(nextName); setNameInput('basic')}}
@@ -174,7 +175,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
             <Input
                 multiline={true}
                 textStyle={{ minHeight: 64 }}
-                placeholder='Description'
+                placeholder={i18next.t('Description')}
                 accessoryLeft={renderIconText}
                 value={description}
                 onChangeText={nextDescription => setDescription(nextDescription)}
@@ -183,7 +184,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
             />
 
             <Autocomplete
-                placeholder='Address *'
+                placeholder={i18next.t('Address form')}
                 value={address}
                 onSelect={onSelect}
                 onChangeText={onChangeText}
@@ -196,7 +197,7 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
             <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags, path: "Add New Place"})}}>
                 <Button status="basic">
                     Tags : {tags.length == 0
-                    ?<Text style={styles.text}>Empty (click here to add)</Text>
+                    ?<Text style={styles.text}>{i18next.t('TagEmpty')}</Text>
                     :null
                 }
                 </Button>
@@ -210,11 +211,11 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
                 }
             </TouchableOpacity>
             <Button onPress={addPlace}>
-                Add place
+                {i18next.t('Add new place')}
             </Button>
-            <Button onPress={resetPlace}>
+            {/*<Button onPress={resetPlace}>
                 reset list places
-            </Button>
+            </Button>*/}
 
         </Layout>
     );

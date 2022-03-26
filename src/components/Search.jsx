@@ -6,6 +6,8 @@ import { cityAutoComplete, geocoding } from '../api/Here';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
 import Toast from 'react-native-root-toast';
+import i18next from 'i18next';
+
 
 
 //distance en km
@@ -69,14 +71,14 @@ const Search = ({navigation, placesList, tagsList}) => {
         if(city.trim().length == 0) {
             setCityinput('danger');
             valid = false;
-            Toast.show('Form incomplete !', {
+            Toast.show(i18next.t('Toast form incomplete'), {
                 duration: Toast.durations.SHORT,
             });
         }
         else if(res.items.length == 0) {
             setCityinput('danger');
             valid = false;
-            Toast.show('City doesnt exist!', {
+            Toast.show(i18next.t('Toast city not correct'), {
                 duration: Toast.durations.SHORT,
             });
         }
@@ -169,7 +171,7 @@ const Search = ({navigation, placesList, tagsList}) => {
         <Layout style={styles.container}>
             <Layout style={styles.containerSearch}>
                 <Input
-                    placeholder='Search'
+                    placeholder={i18next.t('Search')}
                     accessoryLeft={renderIconSearch}
                     value={search}
                     onChangeText={nextValue => setSearch(nextValue)}
@@ -187,7 +189,7 @@ const Search = ({navigation, placesList, tagsList}) => {
                 </Select>
                 <Layout>
                     <Autocomplete
-                        placeholder='City *'
+                        placeholder={i18next.t('City')}
                         value={city}
                         onSelect={onSelectCity}
                         onChangeText={onChangeText}
@@ -207,7 +209,7 @@ const Search = ({navigation, placesList, tagsList}) => {
                     </Select>
                 </Layout>
                 <Button onPress={btnSearch}>
-                    Search
+                    {i18next.t('Search')}
                 </Button>
             </Layout>
             <List

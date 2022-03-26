@@ -3,10 +3,10 @@ import { Layout, Text, Input, Button, IndexPath, Select, SelectItem, Icon, Autoc
 import { StyleSheet, View, Image, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
-
-
 import { autoComplete, geocoding } from '../api/Here';
 import { TouchableOpacity } from "react-native-gesture-handler";
+import i18next from 'i18next';
+
 
 
 const Tags = ({navigation, route, tagsList, dispatch}) => {
@@ -16,7 +16,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
         navigation.setOptions({
             headerRight: () => (
                 <Button appearance={'ghost'} onPress={back}>
-                    Done
+                    {i18next.t('Done')}
                 </Button>
             )
         })
@@ -147,15 +147,20 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
     return (
         <Layout style={styles.container}>
             <View>
-                <Text>Tags selected :</Text>
-                <List 
-                    data={list}
-                    renderItem={renderItem}
-                    horizontal={true}
-                />
+                <Text category="h5">{i18next.t('Tags selected')}</Text>
+                {list.length > 0 &&
+                    <List 
+                        data={list}
+                        renderItem={renderItem}
+                        horizontal={true}
+                    />
+                } 
+                {list.length == 0 &&
+                    <Text>{i18next.t('No tags selected')}</Text>
+                }
             </View>
             <Autocomplete
-                placeholder="Add a tag"
+                placeholder={i18next.t('Add a tag')}
                 value={tagName}
                 onSelect={onSelect}
                 onChangeText={onChangeText}
@@ -165,15 +170,15 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
                 {tagAutocomplete.map(renderAutocomplete)}
             </Autocomplete>
             <View>
-                <Text>Select a tag or create one :</Text>
+                <Text category="h5">{i18next.t('Existing tags')}</Text>
                 <List
                     data={tagsList.tags}
                     renderItem={renderSavedTags}
                 />
             </View>
-            <Button onPress={resetTags}>
+            {/*<Button onPress={resetTags}>
                 reset list tags
-            </Button>
+            </Button>*/}
         </Layout>
         
     )

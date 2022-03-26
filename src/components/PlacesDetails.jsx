@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faFileAlt, faTags, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons'
 import { useIsFocused } from "@react-navigation/native"; // https://stackoverflow.com/questions/60182942/useeffect-not-called-in-react-native-when-back-to-screen
+import i18next from 'i18next';
+
 
 const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
 
@@ -136,7 +138,7 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
         <Layout style={styles.layout2Container} level='2'>
           <Layout style={styles.viewTitle} level='2'>
             <Text style={styles.title}>
-              ADDRESS
+              {i18next.t('ADDRESS')}
             </Text>
             <FontAwesomeIcon icon={faMapMarkedAlt} size={20} color={theme['text-basic-color']} paddingVertical={25} />
           </Layout>
@@ -153,20 +155,20 @@ const PlacesDetails = ({ navigation, route, placesList, dispatch }) => {
             status='success'
             accessoryRight={renderIconEdit}
             onPress={editPlace}>
-            Edit
+            {i18next.t('Edit')}
           </Button>
           <Button
             style={styles.buttonEditDelete}
             status='danger'
             accessoryRight={renderIconTrash}
             onPress={deletePlace}>
-            Delete
+            {i18next.t('Delete')}
           </Button>
         </Layout>
         <Button
           accessoryRight={renderIconMap}
           onPress={openMap}>
-          Open in Map
+          {i18next.t('Open in map')}
         </Button>
       </Layout>
     </Layout>
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
   buttonEditDelete: {
     height: 50,
     width: "40%",
-    paddingHorizontal: 40
+    paddingHorizontal: 20
   },
   icon: {
     width: 32,

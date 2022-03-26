@@ -10,5 +10,30 @@
     "Add new place": "Add new place",
     "Choose the language": "Choose the language",
     "French": "French 🇫🇷",
-    "English": "English 🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+    "English": "English 🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+
+    "Name": "Name *",
+    "Description": "Description",
+    "Address form": "Address *",
+    "TagEmpty": "Empty (click here to add)",
+
+    "Done": "Done",
+    "Tags selected": "Tags selected",
+    "No tags selected": "No tags selected",
+    "Add a tag": "Add a tag",
+    "Exisiting tags": "Exisitng tags :",
+
+    "City": "City *",
+
+    "Location choice": "Location :",
+    "Category": "Category :",
+
+    "ADDRESS": "ADDRESS",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "Open in map": "Open in Maps",
+
+    "Toast form incomplete": "Form incomplete !",
+    "Toast city not correct": "City doesn't exist !",
+    "Toast address not correct": "Address doesn't exist !"
 }

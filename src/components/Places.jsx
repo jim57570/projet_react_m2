@@ -61,25 +61,6 @@ const Places = ({ navigation, placesList }) => {
     }, [NE, SW, NW, SE]);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // Icon search
     const SearchIcon = (props) => (
         <Icon {...props} name='pin' />

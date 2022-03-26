@@ -9,6 +9,7 @@ import { browse } from '../api/Here';
 import { useIsFocused } from "@react-navigation/native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faSearchPlus } from '@fortawesome/free-solid-svg-icons'
+import i18next from 'i18next';
 
 
 
@@ -125,7 +126,7 @@ const Activities = ({ navigation, placesList}) => {
             <View style={styles.bottom}>
                 <View style={styles.info}>
                     <View style={styles.select}>
-                        <Text style={styles.label} category='h5'>Choix du lieu :</Text>
+                        <Text style={styles.label} category='h5'>{i18next.t('Location choice')}</Text>
                         <Select
                             selectedIndex={selectedLoc}
                             onSelect={index => setSelectedLoc(index)}
@@ -135,7 +136,7 @@ const Activities = ({ navigation, placesList}) => {
                         </Select>
                     </View>
                     <View style={styles.select}>
-                        <Text style={styles.label} category='h5'>Catégorie :</Text>
+                        <Text style={styles.label} category='h5'>{i18next.t('Category')}</Text>
                         <Select
                             selectedIndex={selectedCategory}
                             onSelect={index => setSelectedCategory(index)}
@@ -146,7 +147,7 @@ const Activities = ({ navigation, placesList}) => {
                     </View>
                 </View>
                 <Button onPress={btnSearch}>
-                    Search
+                    {i18next.t('Search')}
                 </Button>
                 <List
                     data={listPlaces}

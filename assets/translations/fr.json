@@ -10,5 +10,30 @@
     "Add new place": "Ajout d'une place",
     "Choose the language": "Choisi la langue",
     "French": "Français 🇫🇷",
-    "English": "Anglais 🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+    "English": "Anglais 🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+
+    "Name": "Nom *",
+    "Description": "Description",
+    "Address form": "Adresse *",
+    "TagEmpty": "Aucun tags (cliquer ici pour en ajouter)",
+    
+    "Done": "Valider",
+    "Tags selected": "Tags choisis :",
+    "No tags selected": "Aucun tags choisis",
+    "Add a tag": "Ajouter un tag",
+    "Existing tags": "Tags existants :",
+
+    "City": "Ville *",
+
+    "Location choice": "Choix du lieu :",
+    "Category": "Catégorie :",
+
+    "ADDRESS": "ADRESSE",
+    "Edit": "Modifier",
+    "Delete": "Supprimer",
+    "Open in map": "Ouvrir dans Maps",
+
+    "Toast form incomplete": "Champs manquants !",
+    "Toast city not correct": "La ville saisie est incorrecte !",
+    "Toast address not correct": "L'adresse saisie est incorrecte !"
 }
