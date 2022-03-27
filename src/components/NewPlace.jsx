@@ -195,9 +195,9 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
             </Autocomplete>
 
             <TouchableOpacity style={styles.tagList} onPress={() => {navigation.navigate("Tags", {list: tags, path: "Add New Place"})}}>
-                <Button status="basic">
-                    Tags : {tags.length == 0
-                    ?<Text style={styles.text}>{i18next.t('TagEmpty')}</Text>
+                <Button>
+                    <Text>Tags : </Text>{tags.length == 0
+                    ?<Text>{i18next.t('TagEmpty')}</Text>
                     :null
                 }
                 </Button>
@@ -210,8 +210,8 @@ const NewPlace = ({ placesList, dispatch, navigation, route }) => {
                     />
                 }
             </TouchableOpacity>
-            <Button onPress={addPlace}>
-                {i18next.t('Add new place')}
+            <Button onPress={addPlace} status="success">
+            <Text>{i18next.t('Add new place')}</Text>
             </Button>
             {/*<Button onPress={resetPlace}>
                 reset list places
