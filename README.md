@@ -16,21 +16,6 @@ On trouve 4 branches :
 
 *** Remarques : ***
 
-Penser à pull :
+Sur Android, l'application peut avoir des ralentissements lors de la maj des lieux présents sur la carte
+Une localisation factice a été ajouté suite à des pb de récupération de la position sur android pour éviter un crash
 
-```console
-git pull
-```
-
-Se déplacer sur votre branche :
-
-```console
-git checkout <votre_branche>
-```
-
-Pour fusionner votre branch à la branche principale :
-
-```console
-git checkout main
-git merge <votre_branche>
-```
