@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Layout, Text, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem, List, ListItem, useTheme } from '@ui-kitten/components';
+import { Layout, Text, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem, List, ListItem, useTheme, Modal, Card } from '@ui-kitten/components';
 import { StyleSheet, View, Image, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
@@ -27,6 +27,10 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
     const [tagAutocomplete, setTagAutocomplete] = useState([]);
     const [tagSelected, setTagSelected] = useState([]);
 
+    //modal edit tag
+    const [visible, setVisible] = useState(false);
+    const [editTagName, setEditTagName] = useState("");
+
     
     const back = () => {
         navigation.navigate(route.params.path, {list: list});
@@ -40,7 +44,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
             let suggest = [];
             //on verifie si la recherche correspond à un tag existant
             if(tagsList.tags.findIndex(tag => tag.name === query) == -1)
-                suggest = suggest.concat([{"name": "Add " + query}]);
+                suggest = suggest.concat([{"name": i18next.t('Add') + query}]);
             
             const filter = tagsList.tags.filter(tag => tag.name.toLowerCase().includes(query.toLowerCase()));
             suggest = suggest.concat(filter)
@@ -63,15 +67,22 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
         setTagAutocomplete([]);
     };
 
+    //affichage formulaire edit tag name
+    const editTagForm = (index) => {
+        setEditTagName(tagsList.tags[index].name);
+        setVisible(true);
+    };
+
+    //edit tag name
+    const editTag = () => {
+        console.log(editTagName);
+    };
+
     //delete a selected tag
-    //degeu
-    const deleteSelected = (index) => {
-        //setList([]);
-        
-        const oui = [...list];
-        oui.splice(index, 1);
-        //console.log(oui);
-        setList(oui);
+    const deleteSelected = (index) => {   
+        const newList = [...list];
+        newList.splice(index, 1);
+        setList(newList);
     };
 
     //DEBUG ONLY
@@ -110,12 +121,28 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
     //rendu item list tags saved
     //add edit and delete
     const renderSavedTags = ({item, index}) => (
-        <TouchableOpacity onPress={() => addSavedTag(index)}>
-            <View style={styles.tag}>
-                <Text status={'control'}>{item.name}</Text>
+        <View style={styles.listSavedTags}>
+            <TouchableOpacity style={styles.savedTag} onPress={() => addSavedTag(index)}>
+                <View>
+                    <Text status={'control'}>{item.name}</Text>
+                </View>
+            </TouchableOpacity>
+            <View style={{flexDirection:'row'}}>
+                <Button onPress={() => editTagForm(index)} appearance={'ghost'} accessoryLeft={renderIconEdit} />
+                <Button appearance={'ghost'} accessoryLeft={renderIconTrash} />
             </View>
-        </TouchableOpacity>
-    )
+        </View>
+    );
+
+    // Icône Trash
+    const renderIconTrash = (props) => (
+        <Icon name='trash-2-outline' {...props} />
+    );
+
+    // Icône Edit
+    const renderIconEdit = (props) => (
+        <Icon name='edit' {...props} />
+    );
 
     const styles = StyleSheet.create({
         container: {
@@ -135,12 +162,32 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
             padding: 5,
             paddingRight: 0
         },
+        savedTag: {
+            backgroundColor: theme['color-primary-default'],
+            flexDirection: 'row',
+            borderRadius: 10,
+            alignItems: 'center',
+            height: 30,
+            margin: 10,
+            paddingLeft: 10,
+            paddingRight: 10 
+        },
         btnTag: {
             maxHeight: 20,
             padding: 0,
             borderWidth: 0
             
-        }
+        },
+        listSavedTags: {
+            flexDirection: 'row',
+            justifyContent: 'space-between'
+        },
+        backdrop: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+        input: {
+            paddingBottom: 10
+        },
     });
 
 
@@ -176,6 +223,22 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
                     renderItem={renderSavedTags}
                 />
             </View>
+            <Modal
+                visible={visible}
+                backdropStyle={styles.backdrop}
+                onBackdropPress={() => setVisible(false)}>
+                <Card disabled={true}>
+                    <View>
+                        <Text>{i18next.t('Edit')}</Text>
+                        <Input
+                            placeholder={i18next.t('Name')}
+                            value={editTagName}
+                            style={styles.input}
+                        />
+                        <Button onPress={() => editTag()}>{i18next.t('Done')}</Button>
+                    </View>
+                </Card>     
+            </Modal>
             {/*<Button onPress={resetTags}>
                 reset list tags
             </Button>*/}
