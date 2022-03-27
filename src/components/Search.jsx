@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Layout, Divider, List, ListItem, Button, Input, Select, SelectItem, IndexPath, Icon, Autocomplete, AutocompleteItem} from '@ui-kitten/components';
+import { Layout, Divider, List, ListItem, Button, Input, Select, SelectItem, IndexPath, Icon, Autocomplete, AutocompleteItem, useTheme} from '@ui-kitten/components';
 import { StyleSheet} from 'react-native';
 import { cityAutoComplete, geocoding } from '../api/Here';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -48,6 +48,7 @@ const Search = ({navigation, placesList, tagsList}) => {
         if(query != '')
             fetchCity(query);
     };
+    const theme = useTheme();
 
     //appel api pour avoir liste autocompletion city
     const fetchCity = async (query) => {
@@ -200,7 +201,8 @@ const Search = ({navigation, placesList, tagsList}) => {
                     </Autocomplete>
                     <Select
                         placeholder='Distance'
-                        accessoryLeft={<FontAwesomeIcon icon={faTachometerAlt} />}
+                        style={styles.input}
+                        accessoryLeft={<FontAwesomeIcon icon={faTachometerAlt} color={theme["color-basic-600"]} />}
                         selectedIndex={selectedIndexKilometer}
                         onSelect={index => setSelectedIndexKilometer(index)}
                         value={distanceData[selectedIndexKilometer.row] + ' km'}
