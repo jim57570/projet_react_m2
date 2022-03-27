@@ -28,7 +28,7 @@ const Places = ({ navigation, placesList }) => {
     }, [placesList, isFocused]);
 
 
-
+    //update list when map change
     useEffect(() => {
         setListPlaces([])
     
@@ -37,8 +37,6 @@ const Places = ({ navigation, placesList }) => {
         let temp = [];
 
         listPlacesAll.forEach((item, index) => {
-            /* console.log(item.coordonnee) //value 
-            console.log(index) //index */
             
             const resultat = geolib.isPointInPolygon({ latitude: item.coordonnee.latitude, longitude: item.coordonnee.longitude }, [
                 { lat: SW.latitude, lng: SW.longitude }, // Sud Ouest 

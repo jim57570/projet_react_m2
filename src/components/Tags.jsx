@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Layout, Text, Input, Button, IndexPath, Select, SelectItem, Icon, Autocomplete, AutocompleteItem, List, ListItem, useTheme, Modal, Card } from '@ui-kitten/components';
-import { StyleSheet, View, Image, BackHandler } from 'react-native';
+import React, { useState, useEffect} from "react";
+import { Layout, Text, Input, Button, Icon, Autocomplete, AutocompleteItem, List, useTheme, Modal, Card } from '@ui-kitten/components';
+import { StyleSheet, View} from 'react-native';
 import { connect } from 'react-redux';
-import { useRoute } from '@react-navigation/native';
-import { autoComplete, geocoding } from '../api/Here';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import i18next from 'i18next';
 
@@ -291,7 +289,6 @@ const Tags = ({navigation, route, tagsList, placesList, dispatch}) => {
 };
 
 const mapStateToProps = (state) => {
-    //console.log(state);
     return {
         placesList: state.ReducerPlaces.places,
         tagsList: state.tags

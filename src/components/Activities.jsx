@@ -23,6 +23,7 @@ const Activities = ({ navigation, placesList}) => {
     
     const [localisation, setLocation] = useState([]);
     
+    //update current location from Carte component
     useEffect(() => {
         if(position != null) {
             setLocation([]);
@@ -42,6 +43,7 @@ const Activities = ({ navigation, placesList}) => {
     const [selectedCategory, setSelectedCategory] = React.useState(new IndexPath(0));
     const [selectedLoc, setSelectedLoc] = React.useState(new IndexPath(0));
 
+    //render activity
     const renderItem = ({ item, index }) => (
         <ListItem
             title={item.loc}
@@ -79,12 +81,9 @@ const Activities = ({ navigation, placesList}) => {
 
     //recherche activities
     const btnSearch = async () => {
-        //TODO verification retour API
-        //console.log(localisation[selectedLoc.row]);
         setListPlaces([]);
         const newList = [];
         const res = await browse(HereCategories[selectedCategory.row].id, localisation[selectedLoc.row].coordonnee.latitude, localisation[selectedLoc.row].coordonnee.longitude);
-        //console.log(res);
         res.items.map((item) => {
             newList.push({
                 "id": item.id,
@@ -162,8 +161,6 @@ const mapStateToProps = (state) => {
     }
    
 };
-
-
 
 export default connect(mapStateToProps)(Activities);
 

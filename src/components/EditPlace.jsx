@@ -152,7 +152,6 @@ const EditPlace = ({ route, navigation, navigation: { goBack }, placesList, disp
         
         if(check) {
             const res = await geocoding(address);
-            //TODO verification formulaire
 
             //constitution de notre objet Lieu
             const newPlace = {
