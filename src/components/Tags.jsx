@@ -57,7 +57,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
         //on verifie dans un premier temps que le tag n'a pas deja ete selectionne
         if(list.findIndex(tag => tag.name === tagAutocomplete[index].name) == -1) {
             //Si la suggestion contient "Add" alors on enregistre ce tag dans le reducer
-            if(tagAutocomplete[index].name.includes("Add")) {
+            if(tagAutocomplete[index].name.includes(i18next.t('Add'))) {
                 const action = {type: 'ADD_TAG', value: {"name": tagName}};
                 dispatch(action);  
             }
@@ -248,7 +248,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
 };
 
 const mapStateToProps = (state) => {
-    //console.log(state);
+    console.log(state);
     return {
         tagsList: state.tags
     }
