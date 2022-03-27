@@ -9,7 +9,7 @@ import i18next from 'i18next';
 
 
 
-const Tags = ({navigation, route, tagsList, dispatch}) => {
+const Tags = ({navigation, route, tagsList, placesList, dispatch}) => {
     const theme = useTheme();
 
     useEffect(() => {
@@ -77,6 +77,25 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
 
     //edit tag name
     const editTag = () => {
+        //edit selected tag
+        const newList = [...list];
+        newList.map(tag => {
+            if(tag.name == tagsList.tags[editTagIndex].name)
+                tag.name = editTagName;
+        });
+        setList(newList);
+        
+        //edit places with tag
+        placesList.map(place => {
+            place.tags.map(tag => {
+                if(tag.name == tagsList.tags[editTagIndex].name) {
+                    tag.name = editTagName;
+                    const actionPlace = {type: 'UPDATE_PLACE', value: {place: place}};
+                    dispatch(actionPlace);
+                }
+            })
+        });
+        //edit in reducer
         const action = {type: 'UPDATE_TAG', index: editTagIndex, value: {"name": editTagName}};
         dispatch(action);
         setVisible(false);
@@ -84,6 +103,20 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
 
     //delete a saved tag
     const deleteSavedTag = (index) => {
+        //delete selected tag
+        const newList = list.filter(tag => tag.name != tagsList.tags[index].name);
+        setList(newList);
+
+        //delete places with tag
+        placesList.map(place => {
+            const indexTag = place.tags.findIndex(tag => tag.name == tagsList.tags[index].name);
+            if(indexTag != -1) {
+                place.tags.splice(indexTag, 1);
+                const actionPlace = {type: 'UPDATE_PLACE', value: {place: place}};
+                    dispatch(actionPlace);
+            }
+        });
+        //delete in reducer
         const action = {type: "DELETE_TAG", index: index};
         dispatch(action);
     }
@@ -260,6 +293,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
 const mapStateToProps = (state) => {
     //console.log(state);
     return {
+        placesList: state.ReducerPlaces.places,
         tagsList: state.tags
     }
 }

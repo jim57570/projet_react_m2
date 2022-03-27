@@ -32,7 +32,6 @@ function tagsReducer(state = initialState, action) {
             return nextState || state
         //Modification d'un tag
         case 'UPDATE_TAG':
-            console.log(action);
             nextState = {...state};
             if (action.index != -1)
                 nextState.tags[action.index] = action.value;
