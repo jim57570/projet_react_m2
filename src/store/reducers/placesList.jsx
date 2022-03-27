@@ -17,7 +17,7 @@ function placesReducer(state = initialState, action) {
                 ...state,
                 places: [...state.places, action.value]
             };
-            console.log(nextState);
+            //console.log(nextState);
             return nextState || state
         //Suppression d'un lieu
         case 'DELETE_PLACE':
@@ -29,8 +29,8 @@ function placesReducer(state = initialState, action) {
             return nextState || state
         //Modification d'un lieu
         case 'UPDATE_PLACE':
-            console.log("action.value");
-            console.log(action.value);
+            //console.log("action.value");
+            //console.log(action.value);
             nextState = {...state};
             id = action.value.id;
             index = nextState.places.findIndex(element => element.id == action.value.place.id);

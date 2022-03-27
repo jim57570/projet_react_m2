@@ -27,10 +27,10 @@ const Activities = ({ navigation, placesList}) => {
     const [localisation, setLocation] = useState([]);
     
     useEffect(() => {
+        console.log("USEEFFECT")
         if(position != null) {
             setLocation([]);
             const newList = [...placesList];
-            console.log(newList);
             newList.push({"nom": "localisation",
             "coordonnee": {
                 "latitude": position.coords.latitude,
@@ -84,7 +84,7 @@ const Activities = ({ navigation, placesList}) => {
     //recherche activities
     const btnSearch = async () => {
         //TODO verification retour API
-        console.log(localisation[selectedLoc.row]);
+        //console.log(localisation[selectedLoc.row]);
         setListPlaces([]);
         const newList = [];
         const res = await browse(HereCategories[selectedCategory.row].id, localisation[selectedLoc.row].coordonnee.latitude, localisation[selectedLoc.row].coordonnee.longitude);
@@ -120,7 +120,7 @@ const Activities = ({ navigation, placesList}) => {
     return(
     <Layout style={styles.container}>
             <View style={styles.carte}>
-                <Carte localisation={listPlaces} style={styles.carte} instanceMap={mapRef} setPosition={setPosition} position={position} NoEs = {setNE} NoWs = {setNW} SoWs= {setSW} SoEs = {setSE} />
+                <Carte localisation={listPlaces} style={styles.carte} instanceMap={mapRef} setPosition={setPosition} position={position} />
             </View>
 
             <View style={styles.bottom}>

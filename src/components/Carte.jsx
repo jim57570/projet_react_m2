@@ -92,9 +92,11 @@ const Carte = ({ navigation, localisation, setPosition, position ,instanceMap, N
           ref={mapRef}
           onRegionChange={
             async () => {
-              bounds = null;
-              bounds = await mapRef.current.getMapBoundaries();   
-              if(bounds != null){getBounds(bounds)} 
+              if (NoEs != undefined && NoWs != undefined && SoEs != undefined && SoWs != undefined){
+                bounds = null;
+                bounds = await mapRef.current.getMapBoundaries();   
+                if(bounds != null){getBounds(bounds)} 
+              }
              }          
           }
          >
