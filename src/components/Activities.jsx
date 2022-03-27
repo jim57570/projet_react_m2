@@ -40,7 +40,7 @@ const Activities = ({ navigation, placesList}) => {
             }});
             setLocation(newList);
         }
-    }, [position]);
+    }, [position, placesList, isFocused]);
 
     //component select
     const [selectedCategory, setSelectedCategory] = React.useState(new IndexPath(0));
