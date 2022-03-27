@@ -29,6 +29,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
 
     //modal edit tag
     const [visible, setVisible] = useState(false);
+    const [editTagIndex, setEditTagIndex] = useState(null);
     const [editTagName, setEditTagName] = useState("");
 
     
@@ -69,14 +70,23 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
 
     //affichage formulaire edit tag name
     const editTagForm = (index) => {
+        setEditTagIndex(index);
         setEditTagName(tagsList.tags[index].name);
         setVisible(true);
     };
 
     //edit tag name
     const editTag = () => {
-        console.log(editTagName);
+        const action = {type: 'UPDATE_TAG', index: editTagIndex, value: {"name": editTagName}};
+        dispatch(action);
+        setVisible(false);
     };
+
+    //delete a saved tag
+    const deleteSavedTag = (index) => {
+        const action = {type: "DELETE_TAG", index: index};
+        dispatch(action);
+    }
 
     //delete a selected tag
     const deleteSelected = (index) => {   
@@ -94,7 +104,6 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
     //Ajout d'un tag enregistré à la liste des selectionnées
     const addSavedTag = (index) => {
         //on vérifie que le tag ne soit pas deja selectionne
-        //if(list.indexOf(tagsList.tags[index]) == -1)
         if(list.findIndex(tag => tag.name == tagsList.tags[index].name) == -1)
             setList(list.concat(tagsList.tags[index]));
     }
@@ -118,8 +127,8 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
             </Button>
         </View>
     );
+
     //rendu item list tags saved
-    //add edit and delete
     const renderSavedTags = ({item, index}) => (
         <View style={styles.listSavedTags}>
             <TouchableOpacity style={styles.savedTag} onPress={() => addSavedTag(index)}>
@@ -129,7 +138,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
             </TouchableOpacity>
             <View style={{flexDirection:'row'}}>
                 <Button onPress={() => editTagForm(index)} appearance={'ghost'} accessoryLeft={renderIconEdit} />
-                <Button appearance={'ghost'} accessoryLeft={renderIconTrash} />
+                <Button onPress={() => deleteSavedTag(index)} appearance={'ghost'} accessoryLeft={renderIconTrash} />
             </View>
         </View>
     );
@@ -233,6 +242,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
                         <Input
                             placeholder={i18next.t('Name')}
                             value={editTagName}
+                            onChangeText={nextName => setEditTagName(nextName)}
                             style={styles.input}
                         />
                         <Button onPress={() => editTag()}>{i18next.t('Done')}</Button>
@@ -248,7 +258,7 @@ const Tags = ({navigation, route, tagsList, dispatch}) => {
 };
 
 const mapStateToProps = (state) => {
-    console.log(state);
+    //console.log(state);
     return {
         tagsList: state.tags
     }

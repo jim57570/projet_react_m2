@@ -20,10 +20,7 @@ const Activities = ({ navigation, placesList}) => {
     const mapRef = useRef(null);
     const isFocused = useIsFocused();
     const [position, setPosition] = useState(null);
-    const [NE, setNE] = useState(null);
-    const [SW, setSW] = useState(null);
-    const [NW, setNW] = useState(null);
-    const [SE, setSE] = useState(null);
+    
     const [localisation, setLocation] = useState([]);
     
     useEffect(() => {
