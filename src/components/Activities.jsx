@@ -27,7 +27,6 @@ const Activities = ({ navigation, placesList}) => {
     const [localisation, setLocation] = useState([]);
     
     useEffect(() => {
-        console.log("USEEFFECT")
         if(position != null) {
             setLocation([]);
             const newList = [...placesList];
